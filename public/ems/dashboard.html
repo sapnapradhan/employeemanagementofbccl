@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — Dashboard</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-title"><i class="fa-solid fa-gauge-high"></i> &nbsp;Dashboard</div>
+      <div class="grow"></div>
+      <button class="icon-btn" id="themeToggle" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+      <div class="user"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600">Admin</div><div style="font-size:11px;color:var(--text-muted)">BCCL HQ</div></div></div>
+    </header>
+    <section class="content">
+      <div class="grid cards">
+        <div class="card stat primary"><div class="head"><h3>Total Employees</h3><div class="ic"><i class="fa-solid fa-users"></i></div></div><div class="num" id="kpiTotal">0</div><div class="lbl">Active records</div></div>
+        <div class="card stat warn"><div class="head"><h3>Maximum Salary</h3><div class="ic"><i class="fa-solid fa-indian-rupee-sign"></i></div></div><div class="num" id="kpiMax">₹0</div><div class="lbl">Highest paid</div></div>
+        <div class="card stat success"><div class="head"><h3>Average Salary</h3><div class="ic"><i class="fa-solid fa-chart-line"></i></div></div><div class="num" id="kpiAvg">₹0</div><div class="lbl">Across workforce</div></div>
+        <div class="card stat purple"><div class="head"><h3>Departments</h3><div class="ic"><i class="fa-solid fa-building"></i></div></div><div class="num" id="kpiDept">0</div><div class="lbl">Active units</div></div>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <div class="head"><h3><i class="fa-solid fa-chart-column"></i> &nbsp;Salary by Employee</h3><div class="ic"><i class="fa-solid fa-chart-bar"></i></div></div>
+          <div class="chart-wrap"><canvas id="salaryChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="head"><h3><i class="fa-solid fa-sitemap"></i> &nbsp;Department-wise Distribution</h3><div class="ic"><i class="fa-solid fa-chart-pie"></i></div></div>
+          <div class="chart-wrap"><canvas id="deptChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-clock-rotate-left"></i> &nbsp;Recently Added Employees</h3><a class="btn ghost" href="view-employee.html"><i class="fa-solid fa-arrow-right"></i> View all</a></div>
+        <div class="recent" id="recentList"></div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
