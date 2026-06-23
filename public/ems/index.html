@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — Login</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<div class="login-wrap">
+  <form class="login-card" id="loginForm" autocomplete="off">
+    <div class="brand">
+      <img src="assets/bccl-logo.jpeg" alt="BCCL" />
+      <h1>BCCL Employee Management</h1>
+      <p class="sub">Bharat Coking Coal Limited · Secure Portal</p>
+    </div>
+
+    <div class="field">
+      <label>Username</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-user"></i>
+        <input id="username" type="text" placeholder="admin" required />
+      </div>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock"></i>
+        <input id="password" type="password" placeholder="••••••••" required />
+      </div>
+    </div>
+
+    <div class="alert" id="loginAlert"><i class="fa-solid fa-circle-exclamation"></i> <span></span></div>
+
+    <div style="margin-top: 22px;">
+      <button class="btn block" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+    </div>
+
+    <p class="hint">Demo credentials — <b>admin</b> / <b>admin123</b></p>
+  </form>
+</div>
+<script src="js/storage.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

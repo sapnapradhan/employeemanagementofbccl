@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — Add Employee</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-title"><i class="fa-solid fa-user-plus"></i> &nbsp;<span id="pageTitle">Add Employee</span></div>
+      <div class="grow"></div>
+      <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      <div class="user"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600">Admin</div><div style="font-size:11px;color:var(--text-muted)">BCCL HQ</div></div></div>
+    </header>
+    <section class="content">
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-id-badge"></i> &nbsp;Employee Information</h3><div class="ic"><i class="fa-solid fa-pen-to-square"></i></div></div>
+        <form id="empForm" novalidate>
+          <div class="form-grid">
+            <div class="field no-icon"><label>Employee ID</label><input id="employeeId" readonly /></div>
+            <div class="field no-icon"><label>Employee Name *</label><input id="name" placeholder="Full name" /><div class="err">Name is required</div></div>
+            <div class="field no-icon"><label>Father's Name *</label><input id="fatherName" placeholder="Father's name" /><div class="err">Father's name is required</div></div>
+            <div class="field no-icon"><label>Date of Birth *</label><input id="dob" type="date" /><div class="err">DOB is required</div></div>
+            <div class="field no-icon"><label>Phone Number *</label><input id="phone" inputmode="numeric" maxlength="10" placeholder="10-digit mobile" /><div class="err">Enter a valid 10-digit phone</div></div>
+            <div class="field no-icon"><label>Aadhaar Number *</label><input id="aadhaar" inputmode="numeric" maxlength="12" placeholder="12-digit Aadhaar" /><div class="err">Enter a valid 12-digit Aadhaar</div></div>
+            <div class="field no-icon"><label>Email *</label><input id="email" type="email" placeholder="name@bccl.in" /><div class="err">Enter a valid email</div></div>
+            <div class="field no-icon"><label>Qualification *</label><input id="qualification" placeholder="e.g. B.Tech, MBA" /><div class="err">Qualification is required</div></div>
+            <div class="field no-icon"><label>Designation *</label><input id="designation" placeholder="e.g. Manager" /><div class="err">Designation is required</div></div>
+            <div class="field no-icon"><label>Department *</label>
+              <select id="department">
+                <option value="">Select department</option>
+                <option>Mining</option><option>Operations</option><option>Engineering</option>
+                <option>Finance</option><option>HR</option><option>IT</option>
+                <option>Safety</option><option>Logistics</option><option>Administration</option>
+              </select>
+              <div class="err">Department is required</div>
+            </div>
+            <div class="field no-icon"><label>Salary (₹) *</label><input id="salary" type="number" min="0" placeholder="Monthly salary" /><div class="err">Enter a valid salary</div></div>
+            <div class="field no-icon" style="grid-column: 1 / -1"><label>Address *</label><textarea id="address" rows="2" placeholder="Residential address"></textarea><div class="err">Address is required</div></div>
+          </div>
+          <div class="form-actions">
+            <a class="btn ghost" href="view-employee.html"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            <button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> <span id="submitLabel">Save Employee</span></button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="js/storage.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/employee.js"></script>
+</body>
+</html>
