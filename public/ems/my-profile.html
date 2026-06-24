@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — My Profile</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-title"><i class="fa-solid fa-id-card"></i> &nbsp;<span>My Employee Profile</span></div>
+      <div class="grow"></div>
+      <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      <div class="user" id="userBadge"><div class="avatar" id="userInitial">U</div><div><div style="font-size:13px;font-weight:600" id="userName">User</div><div style="font-size:11px;color:var(--text-muted)" id="userEmail">—</div></div></div>
+    </header>
+    <section class="content">
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-camera"></i> &nbsp;Profile Photo</h3></div>
+        <div class="photo-row">
+          <div class="photo-preview" id="photoPreview"><i class="fa-solid fa-user"></i></div>
+          <div style="flex:1">
+            <label class="btn ghost" for="photoInput"><i class="fa-solid fa-upload"></i> Upload Photo</label>
+            <input id="photoInput" type="file" accept="image/*" hidden />
+            <button class="btn danger" id="removePhoto" type="button" style="display:none"><i class="fa-solid fa-trash"></i> Remove</button>
+            <p class="hint" style="text-align:left;margin-top:8px">PNG/JPG up to 5 MB.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-id-badge"></i> &nbsp;My Information</h3><div class="ic"><i class="fa-solid fa-pen-to-square"></i></div></div>
+        <form id="profileForm" novalidate>
+          <div class="form-grid">
+            <div class="field no-icon"><label>Employee Code</label><input id="employee_code" placeholder="EMP-XXXX" /><div class="err">Required</div></div>
+            <div class="field no-icon"><label>Full Name *</label><input id="name" placeholder="Full name" /><div class="err">Name is required</div></div>
+            <div class="field no-icon"><label>Father's Name</label><input id="father_name" placeholder="Father's name" /></div>
+            <div class="field no-icon"><label>Date of Birth</label><input id="dob" type="date" /></div>
+            <div class="field no-icon"><label>Phone Number</label><input id="phone" inputmode="numeric" maxlength="10" placeholder="10-digit mobile" /><div class="err">Enter a valid 10-digit phone</div></div>
+            <div class="field no-icon"><label>Aadhaar Number</label><input id="aadhaar" inputmode="numeric" maxlength="12" placeholder="12-digit Aadhaar" /><div class="err">12 digits</div></div>
+            <div class="field no-icon"><label>Email</label><input id="email" type="email" placeholder="name@bccl.in" /></div>
+            <div class="field no-icon"><label>Qualification</label><input id="qualification" placeholder="e.g. B.Tech, MBA" /></div>
+            <div class="field no-icon"><label>Designation</label><input id="designation" placeholder="e.g. Engineer" /></div>
+            <div class="field no-icon"><label>Department</label>
+              <select id="department">
+                <option value="">Select department</option>
+                <option>Mining</option><option>Operations</option><option>Engineering</option>
+                <option>Finance</option><option>HR</option><option>IT</option>
+                <option>Safety</option><option>Logistics</option><option>Administration</option>
+              </select>
+            </div>
+            <div class="field no-icon"><label>Salary (₹)</label><input id="salary" type="number" min="0" placeholder="Monthly salary" /></div>
+            <div class="field no-icon" style="grid-column: 1 / -1"><label>Address</label><textarea id="address" rows="2" placeholder="Residential address"></textarea></div>
+          </div>
+          <div class="form-actions">
+            <button class="btn danger" type="button" id="deleteProfile"><i class="fa-solid fa-trash"></i> Delete Profile</button>
+            <button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> <span id="saveLabel">Save Profile</span></button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supa.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/user-layout.js"></script>
+<script src="js/my-profile.js"></script>
+</body>
+</html>

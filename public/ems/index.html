@@ -3,43 +3,97 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BCCL EMS — Login</title>
+<title>BCCL EMS — Sign In</title>
 <link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
 <div class="login-wrap">
-  <form class="login-card" id="loginForm" autocomplete="off">
+  <div class="login-card">
     <div class="brand">
       <img src="assets/bccl-logo.jpeg" alt="BCCL" />
       <h1>BCCL Employee Management</h1>
       <p class="sub">Bharat Coking Coal Limited · Secure Portal</p>
     </div>
 
-    <div class="field">
-      <label>Username</label>
-      <div class="input-wrap">
-        <i class="fa-solid fa-user"></i>
-        <input id="username" type="text" placeholder="admin" required />
+    <div class="tabs">
+      <button class="tab active" data-tab="user"><i class="fa-solid fa-user"></i> Employee</button>
+      <button class="tab" data-tab="admin"><i class="fa-solid fa-user-shield"></i> Admin</button>
+    </div>
+
+    <!-- USER (Supabase auth) -->
+    <div class="pane active" id="paneUser">
+      <div class="seg">
+        <button class="seg-btn active" data-mode="signin">Sign In</button>
+        <button class="seg-btn" data-mode="signup">Sign Up</button>
       </div>
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <div class="input-wrap">
-        <i class="fa-solid fa-lock"></i>
-        <input id="password" type="password" placeholder="••••••••" required />
-      </div>
+
+      <form id="userForm" autocomplete="off">
+        <div class="field" id="fName" style="display:none">
+          <label>Full Name</label>
+          <div class="input-wrap"><i class="fa-solid fa-id-card"></i>
+            <input id="uName" type="text" placeholder="Your name" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <div class="input-wrap"><i class="fa-solid fa-envelope"></i>
+            <input id="uEmail" type="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="input-wrap"><i class="fa-solid fa-lock"></i>
+            <input id="uPass" type="password" placeholder="••••••••" required minlength="6" />
+          </div>
+        </div>
+        <div class="field" id="fConfirm" style="display:none">
+          <label>Confirm Password</label>
+          <div class="input-wrap"><i class="fa-solid fa-lock"></i>
+            <input id="uPass2" type="password" placeholder="Re-enter password" minlength="6" />
+          </div>
+        </div>
+
+        <div class="alert" id="userAlert"><i class="fa-solid fa-circle-exclamation"></i> <span></span></div>
+
+        <div style="margin-top: 22px;">
+          <button class="btn block" type="submit" id="userSubmit">
+            <i class="fa-solid fa-right-to-bracket"></i> <span>Sign In</span>
+          </button>
+        </div>
+      </form>
+      <p class="hint">New here? Click <b>Sign Up</b> to create an account.</p>
     </div>
 
-    <div class="alert" id="loginAlert"><i class="fa-solid fa-circle-exclamation"></i> <span></span></div>
-
-    <div style="margin-top: 22px;">
-      <button class="btn block" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+    <!-- ADMIN (localStorage) -->
+    <div class="pane" id="paneAdmin">
+      <form id="adminForm" autocomplete="off">
+        <div class="field">
+          <label>Username</label>
+          <div class="input-wrap"><i class="fa-solid fa-user"></i>
+            <input id="aUser" type="text" placeholder="admin" required />
+          </div>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="input-wrap"><i class="fa-solid fa-lock"></i>
+            <input id="aPass" type="password" placeholder="••••••••" required />
+          </div>
+        </div>
+        <div class="alert" id="adminAlert"><i class="fa-solid fa-circle-exclamation"></i> <span></span></div>
+        <div style="margin-top: 22px;">
+          <button class="btn block" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In as Admin</button>
+        </div>
+      </form>
+      <p class="hint">Admin demo — <b>admin</b> / <b>admin123</b></p>
     </div>
-
-    <p class="hint">Demo credentials — <b>admin</b> / <b>admin123</b></p>
-  </form>
+  </div>
 </div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supa.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/login.js"></script>
 </body>
