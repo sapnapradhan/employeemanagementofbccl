@@ -16,28 +16,34 @@
       <p class="sub">Bharat Coking Coal Limited · Secure Portal</p>
     </div>
 
+    <div class="auth-tabs" style="display:flex;gap:8px;margin:14px 0 18px;">
+      <button type="button" data-mode="signin" class="btn ghost active" style="flex:1">Sign In</button>
+      <button type="button" data-mode="signup" class="btn ghost" style="flex:1">Sign Up</button>
+    </div>
+
     <div class="field">
-      <label>Username</label>
+      <label>Email</label>
       <div class="input-wrap">
-        <i class="fa-solid fa-user"></i>
-        <input id="username" type="text" placeholder="admin" required />
+        <i class="fa-solid fa-envelope"></i>
+        <input id="email" type="email" placeholder="you@bccl.in" autocomplete="email" required />
       </div>
     </div>
     <div class="field">
       <label>Password</label>
       <div class="input-wrap">
         <i class="fa-solid fa-lock"></i>
-        <input id="password" type="password" placeholder="••••••••" required />
+        <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" minlength="6" required />
       </div>
     </div>
 
     <div class="alert" id="loginAlert"><i class="fa-solid fa-circle-exclamation"></i> <span></span></div>
 
     <div style="margin-top: 22px;">
-      <button class="btn block" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+      <button class="btn block" type="submit" id="submitBtn"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
     </div>
 
-    <p class="hint">Demo credentials — <b>admin</b> / <b>admin123</b></p>
+    <p class="hint">Secure authentication powered by Lovable Cloud</p>
+
   </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
