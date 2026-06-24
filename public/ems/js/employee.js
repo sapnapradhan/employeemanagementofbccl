@@ -80,7 +80,7 @@
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      const data = { employeeId: idEl.value };
+      const data = { employeeId: idEl.value, photo: photoData };
       fields.forEach(f => { data[f] = document.getElementById(f).value.trim(); });
       data.salary = Number(data.salary);
       if (!validate(data)) { EMS.toast("Please fix the highlighted fields", "error"); return; }
