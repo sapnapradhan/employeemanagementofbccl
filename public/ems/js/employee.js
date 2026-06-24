@@ -136,6 +136,7 @@
 
       body.innerHTML = slice.map(e => `
         <tr>
+          <td>${e.photo ? `<img class="photo-thumb" src="${e.photo}" alt="" />` : `<div class="photo-thumb" style="display:inline-grid;place-items:center;background:var(--glass-strong)"><i class="fa-solid fa-user" style="font-size:14px;color:var(--text-muted)"></i></div>`}</td>
           <td><span class="badge">${e.employeeId}</span></td>
           <td><b>${escapeHtml(e.name)}</b></td>
           <td>${escapeHtml(e.fatherName || "")}</td>
