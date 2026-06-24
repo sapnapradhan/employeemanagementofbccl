@@ -16,11 +16,31 @@
     const fields = ["name","fatherName","dob","address","phone","aadhaar","email","qualification","designation","department","salary"];
     const idEl = document.getElementById("employeeId");
 
+    const photoPreview = document.getElementById("photoPreview");
+    const photoInput   = document.getElementById("photoInput");
+    const removeBtn    = document.getElementById("removePhoto");
+    let photoData = null; // base64 dataURL or null
+
+    const renderPhoto = (src) => {
+      if (src) { photoPreview.innerHTML = `<img src="${src}" alt="photo" />`; removeBtn.style.display = ""; }
+      else { photoPreview.innerHTML = `<i class="fa-solid fa-user"></i>`; removeBtn.style.display = "none"; }
+    };
+    photoInput?.addEventListener("change", (e) => {
+      const f = e.target.files[0]; if (!f) return;
+      if (f.size > 2 * 1024 * 1024) { EMS.toast("Max 2 MB", "error"); return; }
+      const r = new FileReader();
+      r.onload = () => { photoData = r.result; renderPhoto(photoData); };
+      r.readAsDataURL(f);
+    });
+    removeBtn?.addEventListener("click", () => { photoData = null; renderPhoto(null); });
+
     if (isEdit) {
       const emp = EMS.get(editId);
       if (!emp) { EMS.toast("Employee not found", "error"); setTimeout(() => location.href = "view-employee.html", 800); return; }
       idEl.value = emp.employeeId;
       fields.forEach(f => { if (document.getElementById(f)) document.getElementById(f).value = emp[f] ?? ""; });
+      photoData = emp.photo || null;
+      renderPhoto(photoData);
       document.getElementById("pageTitle").textContent = "Edit Employee";
       document.getElementById("submitLabel").textContent = "Update Employee";
       document.title = "BCCL EMS — Edit Employee";
@@ -60,7 +80,7 @@
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      const data = { employeeId: idEl.value };
+      const data = { employeeId: idEl.value, photo: photoData };
       fields.forEach(f => { data[f] = document.getElementById(f).value.trim(); });
       data.salary = Number(data.salary);
       if (!validate(data)) { EMS.toast("Please fix the highlighted fields", "error"); return; }
@@ -116,6 +136,7 @@
 
       body.innerHTML = slice.map(e => `
         <tr>
+          <td>${e.photo ? `<img class="photo-thumb" src="${e.photo}" alt="" />` : `<div class="photo-thumb" style="display:inline-grid;place-items:center;background:var(--glass-strong)"><i class="fa-solid fa-user" style="font-size:14px;color:var(--text-muted)"></i></div>`}</td>
           <td><span class="badge">${e.employeeId}</span></td>
           <td><b>${escapeHtml(e.name)}</b></td>
           <td>${escapeHtml(e.fatherName || "")}</td>

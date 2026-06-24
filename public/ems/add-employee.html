@@ -22,6 +22,15 @@
       <div class="card">
         <div class="head"><h3><i class="fa-solid fa-id-badge"></i> &nbsp;Employee Information</h3><div class="ic"><i class="fa-solid fa-pen-to-square"></i></div></div>
         <form id="empForm" novalidate>
+          <div class="photo-row" style="margin-bottom: 18px;">
+            <div class="photo-preview" id="photoPreview"><i class="fa-solid fa-user"></i></div>
+            <div style="flex:1">
+              <label class="btn ghost" for="photoInput"><i class="fa-solid fa-upload"></i> Upload Photo</label>
+              <input id="photoInput" type="file" accept="image/*" hidden />
+              <button class="btn danger" id="removePhoto" type="button" style="display:none"><i class="fa-solid fa-trash"></i> Remove</button>
+              <p class="hint" style="text-align:left;margin-top:8px">PNG/JPG up to 2 MB (stored locally).</p>
+            </div>
+          </div>
           <div class="form-grid">
             <div class="field no-icon"><label>Employee ID</label><input id="employeeId" readonly /></div>
             <div class="field no-icon"><label>Employee Name *</label><input id="name" placeholder="Full name" /><div class="err">Name is required</div></div>
