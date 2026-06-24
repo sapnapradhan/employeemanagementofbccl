@@ -1,5 +1,5 @@
 /* dashboard.js */
-window.addEventListener("ems:ready", function () {
+(function () {
   const list = EMS.all();
   const total = list.length;
   const salaries = list.map(e => Number(e.salary || 0));
@@ -78,4 +78,4 @@ window.addEventListener("ems:ready", function () {
       cutout: "60%",
     },
   });
-});
+})();
