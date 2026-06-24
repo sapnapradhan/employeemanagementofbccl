@@ -1,6 +1,6 @@
 /* employee.js - drives add/edit form AND the view table (page-detected) */
 
-(function () {
+window.addEventListener("ems:ready", function () {
   const form = document.getElementById("empForm");
   const table = document.getElementById("empTable");
 
@@ -175,4 +175,4 @@
   function escapeHtml(s) {
     return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
   }
-})();
+});
