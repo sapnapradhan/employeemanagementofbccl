@@ -16,11 +16,31 @@
     const fields = ["name","fatherName","dob","address","phone","aadhaar","email","qualification","designation","department","salary"];
     const idEl = document.getElementById("employeeId");
 
+    const photoPreview = document.getElementById("photoPreview");
+    const photoInput   = document.getElementById("photoInput");
+    const removeBtn    = document.getElementById("removePhoto");
+    let photoData = null; // base64 dataURL or null
+
+    const renderPhoto = (src) => {
+      if (src) { photoPreview.innerHTML = `<img src="${src}" alt="photo" />`; removeBtn.style.display = ""; }
+      else { photoPreview.innerHTML = `<i class="fa-solid fa-user"></i>`; removeBtn.style.display = "none"; }
+    };
+    photoInput?.addEventListener("change", (e) => {
+      const f = e.target.files[0]; if (!f) return;
+      if (f.size > 2 * 1024 * 1024) { EMS.toast("Max 2 MB", "error"); return; }
+      const r = new FileReader();
+      r.onload = () => { photoData = r.result; renderPhoto(photoData); };
+      r.readAsDataURL(f);
+    });
+    removeBtn?.addEventListener("click", () => { photoData = null; renderPhoto(null); });
+
     if (isEdit) {
       const emp = EMS.get(editId);
       if (!emp) { EMS.toast("Employee not found", "error"); setTimeout(() => location.href = "view-employee.html", 800); return; }
       idEl.value = emp.employeeId;
       fields.forEach(f => { if (document.getElementById(f)) document.getElementById(f).value = emp[f] ?? ""; });
+      photoData = emp.photo || null;
+      renderPhoto(photoData);
       document.getElementById("pageTitle").textContent = "Edit Employee";
       document.getElementById("submitLabel").textContent = "Update Employee";
       document.title = "BCCL EMS — Edit Employee";
