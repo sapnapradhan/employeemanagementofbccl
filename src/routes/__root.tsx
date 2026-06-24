@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "BCCLEMS" },
+      { name: "description", content: "THIS IS AN BCCL EMPLOYEE MANAGEMENT SYSTEM" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "BCCLEMS" },
+      { property: "og:description", content: "THIS IS AN BCCL EMPLOYEE MANAGEMENT SYSTEM" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "BCCLEMS" },
+      { name: "twitter:description", content: "THIS IS AN BCCL EMPLOYEE MANAGEMENT SYSTEM" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/03c3e838-e9b8-41e4-9e0a-9c8f7879ddf9/id-preview-d56be19d--a9006329-767e-423b-be5a-ba1744c905c0.lovable.app-1782223210089.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/03c3e838-e9b8-41e4-9e0a-9c8f7879ddf9/id-preview-d56be19d--a9006329-767e-423b-be5a-ba1744c905c0.lovable.app-1782223210089.png" },
     ],
     links: [
       {
