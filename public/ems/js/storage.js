@@ -1,8 +1,7 @@
-/* storage.js - LocalStorage helpers + shared utilities */
+/* storage.js - LocalStorage helpers + shared utilities + Supabase auth */
 const EMS = (() => {
   const KEY_EMP = "bccl_ems_employees";
   const KEY_SEQ = "bccl_ems_seq";
-  const KEY_AUTH = "bccl_ems_auth";
   const KEY_THEME = "bccl_ems_theme";
 
   const read = () => {
@@ -18,8 +17,7 @@ const EMS = (() => {
       const n = parseInt((e.employeeId || "").replace(/\D/g, ""), 10);
       if (!isNaN(n) && n > max) max = n;
     });
-    const next = max + 1;
-    return "EMP" + String(next).padStart(3, "0");
+    return "EMP" + String(max + 1).padStart(3, "0");
   };
   const commitId = (id) => {
     const n = parseInt((id || "").replace(/\D/g, ""), 10);
@@ -30,12 +28,8 @@ const EMS = (() => {
   const get = (id) => read().find(e => e.employeeId === id);
   const add = (emp) => {
     const list = read();
-    if (list.some(e => e.employeeId === emp.employeeId)) {
-      throw new Error("Duplicate Employee ID");
-    }
-    list.push(emp);
-    write(list);
-    commitId(emp.employeeId);
+    if (list.some(e => e.employeeId === emp.employeeId)) throw new Error("Duplicate Employee ID");
+    list.push(emp); write(list); commitId(emp.employeeId);
   };
   const update = (id, emp) => {
     const list = read();
@@ -58,17 +52,39 @@ const EMS = (() => {
     samples.forEach(s => add({ employeeId: nextId(), createdAt: Date.now() - Math.random()*1e9, ...s }));
   };
 
-  /* Auth */
-  const login = (u, p) => {
-    if (u === "admin" && p === "admin123") {
-      sessionStorage.setItem(KEY_AUTH, "1");
-      return true;
-    }
-    return false;
+  /* ===== Auth (Supabase) ===== */
+  const sb = () => window.sb;
+
+  const signIn = async (email, password) => {
+    const { data, error } = await sb().auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
   };
-  const isAuthed = () => sessionStorage.getItem(KEY_AUTH) === "1";
-  const logout = () => { sessionStorage.removeItem(KEY_AUTH); location.href = "index.html"; };
-  const requireAuth = () => { if (!isAuthed()) location.href = "index.html"; };
+  const signUp = async (email, password) => {
+    const { data, error } = await sb().auth.signUp({
+      email, password,
+      options: { emailRedirectTo: window.location.origin + "/ems/index.html" },
+    });
+    if (error) throw error;
+    return data;
+  };
+  const signOut = async () => {
+    try { await sb().auth.signOut(); } catch {}
+    location.href = "index.html";
+  };
+  const getSession = async () => {
+    const { data } = await sb().auth.getSession();
+    return data.session;
+  };
+  const getUser = async () => {
+    const { data } = await sb().auth.getUser();
+    return data.user;
+  };
+  const requireAuth = async () => {
+    const s = await getSession();
+    if (!s) { location.href = "index.html"; return null; }
+    return s;
+  };
 
   /* Theme */
   const getTheme = () => localStorage.getItem(KEY_THEME) || "dark";
@@ -94,7 +110,9 @@ const EMS = (() => {
   };
 
   return { all, get, add, update, remove, nextId, seedIfEmpty,
-    login, isAuthed, logout, requireAuth,
+    signIn, signUp, signOut, getSession, getUser, requireAuth,
+    // back-compat aliases
+    logout: signOut,
     getTheme, setTheme, applyTheme,
     inr, initial, toast };
 })();
