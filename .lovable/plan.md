@@ -1,20 +1,15 @@
-## Two bugs to fix
+## Diagnose preview "Not Found"
 
-### 1. "duplicate key value violates unique constraint employee_profiles_user_id_key"
-The save handler decides INSERT vs UPDATE from an in-memory `currentRow` variable. On a fresh page load where the row already exists but `loadProfile()` hasn't finished (or the user saves before the state syncs), it tries INSERT against a `user_id` that already has a row → unique violation.
+The earlier preview screenshot showed a "Lovable proxy error 500", and now it's 404 — that points at the live preview sandbox, not a code logic bug. Possible causes:
+1. Dev server crashed or restarted into a bad state.
+2. You navigated to a path that doesn't exist (e.g. `/ems/something.html` typo, or a TanStack route that isn't defined).
+3. A static file under `public/ems/` is being requested with the wrong path.
 
-**Fix:** Replace the insert/update branching in `public/ems/js/my-profile.js` with a single `upsert(payload, { onConflict: 'user_id' })`. This makes save idempotent and removes the race entirely.
+## Steps
+1. Read the sandbox dev-server logs (`/tmp/sandbox-state.db` daemon log for `vite`) for the last error.
+2. `curl` the preview origin for `/`, `/ems/`, `/ems/index.html`, `/ems/my-profile.html` to see which actually 404 vs 200.
+3. If the dev server is wedged, restart it once via `code--restart_dev_server`.
+4. If the 404 is from a real missing path (e.g. `my-profile.html` referenced as `/my-profile.html` instead of `/ems/my-profile.html`), fix the link in the page that points there.
+5. Report findings — no speculative code changes.
 
-### 2. "permission denied for function has_role" when deleting
-The RLS policy `Admins can view all employee profiles` calls `public.has_role(...)`. Postgres evaluates that policy for every authenticated query (including DELETE), but the `authenticated` role was never granted EXECUTE on `public.has_role`, so the whole statement fails.
-
-**Fix (migration):**
-```sql
-GRANT EXECUTE ON FUNCTION public.has_role(uuid, app_role) TO authenticated, anon;
-```
-
-### Files changed
-- `supabase/migrations/<new>.sql` — grant EXECUTE on `has_role`.
-- `public/ems/js/my-profile.js` — switch save to `upsert` on `user_id`; remove the insert/update branch.
-
-No UI or schema changes beyond the grant.
+No schema or feature changes; this is a preview/debug pass.
