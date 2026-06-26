@@ -80,7 +80,9 @@
       return EMS.toast("Photo upload failed: " + err.message, "error");
     }
 
-    // Upsert
+    // If user edits a rejected profile, reset to pending for re-review.
+    if (currentRow && currentRow.status === "rejected") data.status = "pending";
+
     const payload = currentRow ? data : data;
     const { error } = currentRow
       ? await SUPA.from("employee_profiles").update(payload).eq("user_id", userId)
