@@ -97,7 +97,7 @@ export const Route = createFileRoute('/api/public/admin-profiles')({
           ];
           const clean: Record<string, any> = {};
           for (const k of allowed) if (k in patch) clean[k] = patch[k];
-          const { error } = await supa.from('employee_profiles').update(clean).eq('id', id);
+          const { error } = await supa.from('employee_profiles').update(clean as any).eq('id', id);
           if (error)
             return new Response(JSON.stringify({ error: error.message }), {
               status: 500,
@@ -112,7 +112,7 @@ export const Route = createFileRoute('/api/public/admin-profiles')({
         if (action === 'approve' && id) {
           const { error } = await supa
             .from('employee_profiles')
-            .update({ status: 'approved', approved_at: new Date().toISOString() })
+            .update({ status: "approved", approved_at: new Date().toISOString() } as any)
             .eq('id', id);
           if (error)
             return new Response(JSON.stringify({ error: error.message }), {
@@ -128,7 +128,7 @@ export const Route = createFileRoute('/api/public/admin-profiles')({
         if (action === 'reject' && id) {
           const { error } = await supa
             .from('employee_profiles')
-            .update({ status: 'rejected', approved_at: null })
+            .update({ status: "rejected", approved_at: null } as any)
             .eq('id', id);
           if (error)
             return new Response(JSON.stringify({ error: error.message }), {
