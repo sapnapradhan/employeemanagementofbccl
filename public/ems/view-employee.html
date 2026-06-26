@@ -22,6 +22,13 @@
       <div class="card">
         <div class="toolbar">
           <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="searchInput" placeholder="Search by name or Employee ID..." /></div>
+          <select id="statusFilter" class="seg-select" style="padding:10px 14px;border-radius:12px;background:var(--glass);color:var(--text);border:1px solid var(--border)">
+            <option value="">All sources</option>
+            <option value="local">Local (admin-added)</option>
+            <option value="pending">Cloud · Pending approval</option>
+            <option value="approved">Cloud · Approved</option>
+            <option value="rejected">Cloud · Rejected</option>
+          </select>
           <a class="btn" href="add-employee.html"><i class="fa-solid fa-user-plus"></i> Add Employee</a>
         </div>
       </div>
@@ -29,7 +36,7 @@
         <div class="table-wrap">
           <table id="empTable">
             <thead><tr>
-              <th></th><th>Emp ID</th><th>Name</th><th>Father's Name</th><th>Department</th><th>Designation</th><th>Salary</th><th>Phone</th><th>Email</th><th style="text-align:right">Actions</th>
+              <th></th><th>Emp ID</th><th>Name</th><th>Department</th><th>Designation</th><th>Salary</th><th>Phone</th><th>Email</th><th>Status</th><th style="text-align:right">Actions</th>
             </tr></thead>
             <tbody id="empBody"></tbody>
           </table>

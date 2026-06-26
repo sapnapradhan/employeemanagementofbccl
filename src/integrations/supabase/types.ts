@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           aadhaar: string | null
           address: string | null
+          approved_at: string | null
           created_at: string
           department: string | null
           designation: string | null
@@ -31,12 +32,14 @@ export type Database = {
           photo_url: string | null
           qualification: string | null
           salary: number | null
+          status: string
           updated_at: string
           user_id: string
         }
         Insert: {
           aadhaar?: string | null
           address?: string | null
+          approved_at?: string | null
           created_at?: string
           department?: string | null
           designation?: string | null
@@ -50,12 +53,14 @@ export type Database = {
           photo_url?: string | null
           qualification?: string | null
           salary?: number | null
+          status?: string
           updated_at?: string
           user_id: string
         }
         Update: {
           aadhaar?: string | null
           address?: string | null
+          approved_at?: string | null
           created_at?: string
           department?: string | null
           designation?: string | null
@@ -69,6 +74,7 @@ export type Database = {
           photo_url?: string | null
           qualification?: string | null
           salary?: number | null
+          status?: string
           updated_at?: string
           user_id?: string
         }

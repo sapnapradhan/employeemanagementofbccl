@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicAdminProfilesRouteImport } from './routes/api/public/admin-profiles'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAdminProfilesRoute = ApiPublicAdminProfilesRouteImport.update({
+  id: '/api/public/admin-profiles',
+  path: '/api/public/admin-profiles',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/public/admin-profiles': typeof ApiPublicAdminProfilesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/public/admin-profiles': typeof ApiPublicAdminProfilesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/public/admin-profiles': typeof ApiPublicAdminProfilesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/public/admin-profiles'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/public/admin-profiles'
+  id: '__root__' | '/' | '/api/public/admin-profiles'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiPublicAdminProfilesRoute: typeof ApiPublicAdminProfilesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +58,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/admin-profiles': {
+      id: '/api/public/admin-profiles'
+      path: '/api/public/admin-profiles'
+      fullPath: '/api/public/admin-profiles'
+      preLoaderRoute: typeof ApiPublicAdminProfilesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiPublicAdminProfilesRoute: ApiPublicAdminProfilesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

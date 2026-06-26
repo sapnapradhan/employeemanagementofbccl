@@ -58,17 +58,40 @@ const EMS = (() => {
     samples.forEach(s => add({ employeeId: nextId(), createdAt: Date.now() - Math.random()*1e9, ...s }));
   };
 
-  /* Auth */
+  /* Auth — admin password is whatever the server's ADMIN_PASSWORD secret is.
+     We accept it client-side then verify via the Cloud API on first use. */
+  const KEY_PASS = "bccl_ems_admin_pass";
   const login = (u, p) => {
-    if (u === "admin" && p === "admin123") {
-      sessionStorage.setItem(KEY_AUTH, "1");
-      return true;
-    }
-    return false;
+    if (u !== "admin" || !p) return false;
+    sessionStorage.setItem(KEY_AUTH, "1");
+    sessionStorage.setItem(KEY_PASS, p);
+    return true;
   };
+  const adminPass = () => sessionStorage.getItem(KEY_PASS) || "";
   const isAuthed = () => sessionStorage.getItem(KEY_AUTH) === "1";
-  const logout = () => { sessionStorage.removeItem(KEY_AUTH); location.href = "index.html"; };
+  const logout = () => { sessionStorage.removeItem(KEY_AUTH); sessionStorage.removeItem(KEY_PASS); location.href = "index.html"; };
   const requireAuth = () => { if (!isAuthed()) location.href = "index.html"; };
+
+  /* Cloud admin API (calls /api/public/admin-profiles with x-admin-password) */
+  const cloud = {
+    async list() {
+      const r = await fetch("/api/public/admin-profiles", { headers: { "x-admin-password": adminPass() } });
+      if (r.status === 401) throw new Error("Admin password rejected by server");
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || "Failed");
+      return j.rows || [];
+    },
+    async act(action, id, patch) {
+      const r = await fetch("/api/public/admin-profiles", {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-admin-password": adminPass() },
+        body: JSON.stringify({ action, id, patch }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || "Failed");
+      return j;
+    },
+  };
 
   /* Theme */
   const getTheme = () => localStorage.getItem(KEY_THEME) || "dark";
@@ -94,7 +117,7 @@ const EMS = (() => {
   };
 
   return { all, get, add, update, remove, nextId, seedIfEmpty,
-    login, isAuthed, logout, requireAuth,
+    login, isAuthed, logout, requireAuth, adminPass, cloud,
     getTheme, setTheme, applyTheme,
     inr, initial, toast };
 })();

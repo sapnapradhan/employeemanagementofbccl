@@ -75,16 +75,23 @@ userForm.addEventListener("submit", async (e) => {
 
 /* ---------- ADMIN ---------- */
 const adminForm = document.getElementById("adminForm");
-adminForm.addEventListener("submit", (e) => {
+adminForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+  hideAlert("adminAlert");
   const u = document.getElementById("aUser").value.trim();
   const p = document.getElementById("aPass").value;
-  if (EMS.login(u, p)) {
-    EMS.seedIfEmpty();
-    location.href = "dashboard.html";
-  } else {
-    showAlert("adminAlert", "Invalid admin credentials.");
+  if (u !== "admin" || !p) return showAlert("adminAlert", "Invalid admin credentials.");
+  // Verify against server using the configured ADMIN_PASSWORD secret
+  try {
+    const r = await fetch("/api/public/admin-profiles", { headers: { "x-admin-password": p } });
+    if (r.status === 401) return showAlert("adminAlert", "Invalid admin credentials.");
+    if (!r.ok) return showAlert("adminAlert", "Server error. Try again.");
+  } catch {
+    return showAlert("adminAlert", "Network error. Try again.");
   }
+  EMS.login(u, p);
+  EMS.seedIfEmpty();
+  location.href = "dashboard.html";
 });
 
 function showAlert(id, msg) {
