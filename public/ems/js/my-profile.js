@@ -80,10 +80,11 @@
       return EMS.toast("Photo upload failed: " + err.message, "error");
     }
 
-    // Upsert (idempotent — no race between insert/update)
-    const { error } = await SUPA
-      .from("employee_profiles")
-      .upsert(data, { onConflict: "user_id" });
+    // Upsert
+    const payload = currentRow ? data : data;
+    const { error } = currentRow
+      ? await SUPA.from("employee_profiles").update(payload).eq("user_id", userId)
+      : await SUPA.from("employee_profiles").insert(payload);
 
     saveLabel.textContent = "Save Profile";
     if (error) return EMS.toast(error.message, "error");
