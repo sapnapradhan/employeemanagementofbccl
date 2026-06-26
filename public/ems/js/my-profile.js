@@ -114,6 +114,7 @@
     const { data: row, error } = await SUPA.from("employee_profiles").select("*").eq("user_id", userId).maybeSingle();
     if (error) { EMS.toast(error.message, "error"); return; }
     currentRow = row;
+    renderStatus(row?.status);
     if (!row) { renderPhoto(null); return; }
     fields.forEach(f => { const el = document.getElementById(f); if (el && row[f] != null) el.value = row[f]; });
     currentPhotoPath = row.photo_url || null;
@@ -124,6 +125,21 @@
       renderPhoto(null);
     }
     saveLabel.textContent = "Update Profile";
+  }
+
+  function renderStatus(status) {
+    const b = document.getElementById("statusBanner");
+    if (!b) return;
+    if (!status) { b.style.display = "none"; return; }
+    const map = {
+      pending:  { c: "#f59e0b", i: "fa-hourglass-half", t: "Pending approval", m: "Your profile has been submitted and is awaiting admin approval." },
+      approved: { c: "#10b981", i: "fa-circle-check",   t: "Approved",         m: "Your profile is approved and visible to the admin team." },
+      rejected: { c: "#ef4444", i: "fa-circle-xmark",   t: "Not approved",     m: "Your submission was not approved. Please update your details and save again." },
+    };
+    const s = map[status] || map.pending;
+    b.style.display = "";
+    b.style.borderLeft = `4px solid ${s.c}`;
+    b.innerHTML = `<div style="display:flex;gap:14px;align-items:center"><i class="fa-solid ${s.i}" style="color:${s.c};font-size:24px"></i><div><div style="font-weight:700;color:${s.c}">${s.t}</div><div style="color:var(--text-muted);font-size:13px;margin-top:2px">${s.m}</div></div></div>`;
   }
 
   function renderPhoto(src) {
