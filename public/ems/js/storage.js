@@ -117,7 +117,7 @@ const EMS = (() => {
   };
 
   return { all, get, add, update, remove, nextId, seedIfEmpty,
-    login, isAuthed, logout, requireAuth,
+    login, isAuthed, logout, requireAuth, adminPass, cloud,
     getTheme, setTheme, applyTheme,
     inr, initial, toast };
 })();
