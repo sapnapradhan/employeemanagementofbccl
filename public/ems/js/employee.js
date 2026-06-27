@@ -146,7 +146,7 @@
       body.innerHTML = slice.map(e => `
         <tr>
           <td>${e.photo ? `<img class="photo-thumb" src="${e.photo}" alt="" />` : `<div class="photo-thumb" style="display:inline-grid;place-items:center;background:var(--glass-strong)"><i class="fa-solid fa-user" style="font-size:14px;color:var(--text-muted)"></i></div>`}</td>
-          <td><span class="badge">${e.employeeId}</span></td>
+          <td><span class="badge">${e.employeeId}</span>${e.__cloud ? ` <span class="badge" style="background:rgba(16,185,129,.15);color:#10b981;border-color:rgba(16,185,129,.4)" title="Approved user account">User</span>` : ""}</td>
           <td><b>${escapeHtml(e.name)}</b></td>
           <td>${escapeHtml(e.fatherName || "")}</td>
           <td>${escapeHtml(e.department || "")}</td>
@@ -156,8 +156,10 @@
           <td>${escapeHtml(e.email || "")}</td>
           <td style="text-align:right">
             <div class="row-actions">
-              <a class="icon-act" title="Edit" href="add-employee.html?id=${encodeURIComponent(e.employeeId)}"><i class="fa-solid fa-pen"></i></a>
-              <button class="icon-act del" title="Delete" data-id="${e.employeeId}" data-name="${escapeHtml(e.name)}"><i class="fa-solid fa-trash"></i></button>
+              ${e.__cloud
+                ? `<span class="icon-act" title="Managed by user" style="opacity:.5;cursor:not-allowed"><i class="fa-solid fa-lock"></i></span>`
+                : `<a class="icon-act" title="Edit" href="add-employee.html?id=${encodeURIComponent(e.employeeId)}"><i class="fa-solid fa-pen"></i></a>
+                   <button class="icon-act del" title="Delete" data-id="${e.employeeId}" data-name="${escapeHtml(e.name)}"><i class="fa-solid fa-trash"></i></button>`}
             </div>
           </td>
         </tr>`).join("");
