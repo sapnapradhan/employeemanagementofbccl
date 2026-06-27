@@ -1,22 +1,10 @@
-/* user-layout.js — sidebar/topbar for signed-in Supabase users.
-   Also gates the page on status='approved'. */
+/* user-layout.js — sidebar/topbar for signed-in Supabase users */
 EMS.applyTheme();
 
 (async function () {
   const { data } = await window.SUPA.auth.getSession();
   if (!data?.session) { location.href = "index.html"; return; }
   const user = data.session.user;
-
-  // Gate: only approved users can access user pages
-  try {
-    const { data: profile } = await window.SUPA
-      .from("employee_profiles")
-      .select("status")
-      .eq("user_id", user.id)
-      .maybeSingle();
-    const status = profile?.status || "pending";
-    if (status !== "approved") { location.href = "pending-approval.html"; return; }
-  } catch (_) { location.href = "pending-approval.html"; return; }
 
   // Topbar identity
   const name = (user.user_metadata && user.user_metadata.full_name) || (user.email || "User").split("@")[0];

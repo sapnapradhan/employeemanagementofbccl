@@ -1,26 +1,12 @@
 /* login.js — handles Admin (localStorage) and Employee (Supabase) auth */
 EMS.applyTheme();
 
-async function routeByStatus(userId) {
-  try {
-    const { data: profile } = await window.SUPA
-      .from("employee_profiles")
-      .select("status")
-      .eq("user_id", userId)
-      .maybeSingle();
-    const status = profile?.status || "pending";
-    location.href = status === "approved" ? "my-profile.html" : "pending-approval.html";
-  } catch {
-    location.href = "pending-approval.html";
-  }
-}
-
 // If already authed (admin or user), bounce to the right page
 (async () => {
   if (EMS.isAuthed()) { location.href = "dashboard.html"; return; }
   try {
     const { data } = await window.SUPA.auth.getSession();
-    if (data?.session) { await routeByStatus(data.session.user.id); return; }
+    if (data?.session) { location.href = "my-profile.html"; return; }
   } catch (_) {}
 })();
 
@@ -74,29 +60,16 @@ userForm.addEventListener("submit", async (e) => {
     });
     if (error) return showAlert("userAlert", error.message);
     if (!data.session) {
-      return showAlert("userAlert", "Check your email to confirm your account, then sign in.");
+      // Auto-confirm is on; this branch is unlikely but handle anyway.
+      return showAlert("userAlert", "Check your email to confirm your account.", "info");
     }
-
-    // Create the pending profile row (RLS allows: auth.uid() = user_id)
-    const uid = data.session.user.id;
-    const code = "EMP-" + uid.slice(0, 6).toUpperCase();
-    const { error: insErr } = await window.SUPA.from("employee_profiles").insert({
-      user_id: uid,
-      employee_code: code,
-      name,
-      email,
-      status: "pending",
-    });
-    if (insErr && !/duplicate|unique/i.test(insErr.message)) {
-      return showAlert("userAlert", "Account created but profile setup failed: " + insErr.message);
-    }
-    EMS.toast("Account created — pending approval");
-    setTimeout(() => location.href = "pending-approval.html", 500);
+    EMS.toast("Account created!");
+    setTimeout(() => location.href = "my-profile.html", 500);
   } else {
-    const { data, error } = await window.SUPA.auth.signInWithPassword({ email, password: pass });
+    const { error } = await window.SUPA.auth.signInWithPassword({ email, password: pass });
     if (error) return showAlert("userAlert", error.message);
     EMS.toast("Signed in");
-    setTimeout(() => routeByStatus(data.user.id), 300);
+    setTimeout(() => location.href = "my-profile.html", 400);
   }
 });
 

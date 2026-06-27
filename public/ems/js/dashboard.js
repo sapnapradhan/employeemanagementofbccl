@@ -1,8 +1,6 @@
 /* dashboard.js */
-(async function () {
-  const cloud = (window.EMSCloud ? await window.EMSCloud.listApproved() : []) || [];
-  const list = EMS.all().concat(cloud);
-
+(function () {
+  const list = EMS.all();
   const total = list.length;
   const salaries = list.map(e => Number(e.salary || 0));
   const max = salaries.length ? Math.max(...salaries) : 0;
@@ -25,7 +23,7 @@
       <div class="item">
         <div class="av">${EMS.initial(e.name)}</div>
         <div class="meta">
-          <div class="n">${e.name} <span class="badge">${e.employeeId}</span>${e.__cloud ? ` <span class="badge" style="background:rgba(16,185,129,.15);color:#10b981;border-color:rgba(16,185,129,.4)">User</span>` : ""}</div>
+          <div class="n">${e.name} <span class="badge">${e.employeeId}</span></div>
           <div class="d">${e.designation || ""} · ${e.department || ""}</div>
         </div>
         <div style="font-weight:700">${EMS.inr(e.salary)}</div>
