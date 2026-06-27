@@ -113,15 +113,24 @@
     const confirmOk = document.getElementById("confirmOk");
     const confirmCancel = document.getElementById("confirmCancel");
 
-    const state = { q: "", page: 1, perPage: 8, pendingDelete: null };
+    const state = { q: "", page: 1, perPage: 8, pendingDelete: null, cloud: [] };
 
     function getFiltered() {
       const q = state.q.toLowerCase();
-      return EMS.all().filter(e =>
+      const merged = EMS.all().concat(state.cloud);
+      return merged.filter(e =>
         !q ||
         (e.name || "").toLowerCase().includes(q) ||
         (e.employeeId || "").toLowerCase().includes(q)
       ).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    }
+
+    // Load approved cloud profiles in the background and re-render
+    if (window.EMSCloud) {
+      window.EMSCloud.listApproved().then(rows => {
+        state.cloud = rows || [];
+        render();
+      });
     }
 
     function render() {
