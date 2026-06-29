@@ -38,6 +38,14 @@
       </div>
 
       <div class="card">
+        <div class="head">
+          <h3><i class="fa-solid fa-user-clock"></i> &nbsp;Pending Profile Approvals</h3>
+          <a class="btn ghost" href="approvals.html"><i class="fa-solid fa-arrow-right"></i> Review all</a>
+        </div>
+        <div id="pendingWidget" class="recent"><div class="empty">Loading…</div></div>
+      </div>
+
+      <div class="card">
         <div class="head"><h3><i class="fa-solid fa-clock-rotate-left"></i> &nbsp;Recently Added Employees</h3><a class="btn ghost" href="view-employee.html"><i class="fa-solid fa-arrow-right"></i> View all</a></div>
         <div class="recent" id="recentList"></div>
       </div>
@@ -46,6 +54,8 @@
 </div>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supa.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/layout.js"></script>
 <script src="js/dashboard.js"></script>
