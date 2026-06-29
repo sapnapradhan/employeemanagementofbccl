@@ -31,8 +31,10 @@ export type Database = {
           phone: string | null
           photo_url: string | null
           qualification: string | null
+          rejection_reason: string | null
           salary: number | null
           status: string
+          submitted_at: string | null
           updated_at: string
           user_id: string
         }
@@ -52,8 +54,10 @@ export type Database = {
           phone?: string | null
           photo_url?: string | null
           qualification?: string | null
+          rejection_reason?: string | null
           salary?: number | null
           status?: string
+          submitted_at?: string | null
           updated_at?: string
           user_id: string
         }
@@ -73,12 +77,70 @@ export type Database = {
           phone?: string | null
           photo_url?: string | null
           qualification?: string | null
+          rejection_reason?: string | null
           salary?: number | null
           status?: string
+          submitted_at?: string | null
           updated_at?: string
           user_id?: string
         }
         Relationships: []
+      }
+      form16_documents: {
+        Row: {
+          created_at: string
+          deductions: Json | null
+          employee_profile_id: string
+          file_path: string | null
+          financial_year: string
+          gross_salary: number | null
+          id: string
+          notes: string | null
+          source: string
+          tds: number | null
+          updated_at: string
+          uploaded_by: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deductions?: Json | null
+          employee_profile_id: string
+          file_path?: string | null
+          financial_year: string
+          gross_salary?: number | null
+          id?: string
+          notes?: string | null
+          source: string
+          tds?: number | null
+          updated_at?: string
+          uploaded_by?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deductions?: Json | null
+          employee_profile_id?: string
+          file_path?: string | null
+          financial_year?: string
+          gross_salary?: number | null
+          id?: string
+          notes?: string | null
+          source?: string
+          tds?: number | null
+          updated_at?: string
+          uploaded_by?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form16_documents_employee_profile_id_fkey"
+            columns: ["employee_profile_id"]
+            isOneToOne: false
+            referencedRelation: "employee_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
