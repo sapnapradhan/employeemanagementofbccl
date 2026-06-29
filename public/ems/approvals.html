@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — Approvals</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-title"><i class="fa-solid fa-user-check"></i> &nbsp;Profile Approvals</div>
+      <div class="grow"></div>
+      <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      <div class="user"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600">Admin</div><div style="font-size:11px;color:var(--text-muted)">BCCL HQ</div></div></div>
+    </header>
+    <section class="content">
+      <div class="grid cards">
+        <div class="card stat warn"><div class="head"><h3>Pending</h3><div class="ic"><i class="fa-solid fa-hourglass-half"></i></div></div><div class="num" id="kPending">0</div><div class="lbl">Awaiting review</div></div>
+        <div class="card stat success"><div class="head"><h3>Approved</h3><div class="ic"><i class="fa-solid fa-circle-check"></i></div></div><div class="num" id="kApproved">0</div></div>
+        <div class="card stat primary"><div class="head"><h3>Rejected</h3><div class="ic"><i class="fa-solid fa-circle-xmark"></i></div></div><div class="num" id="kRejected">0</div></div>
+        <div class="card stat purple"><div class="head"><h3>Total Submissions</h3><div class="ic"><i class="fa-solid fa-users"></i></div></div><div class="num" id="kTotal">0</div></div>
+      </div>
+
+      <div class="card">
+        <div class="toolbar">
+          <div class="seg" id="filterSeg">
+            <button class="seg-btn active" data-f="pending">Pending</button>
+            <button class="seg-btn" data-f="approved">Approved</button>
+            <button class="seg-btn" data-f="rejected">Rejected</button>
+            <button class="seg-btn" data-f="all">All</button>
+          </div>
+          <div class="grow"></div>
+          <button class="btn ghost" id="refreshBtn"><i class="fa-solid fa-rotate"></i> Refresh</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th></th><th>Employee Code</th><th>Name</th><th>Email</th>
+              <th>Department</th><th>Designation</th><th>Salary</th>
+              <th>Status</th><th>Submitted</th><th style="text-align:right">Actions</th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div id="emptyState" class="empty" style="display:none">
+          <i class="fa-solid fa-inbox" style="font-size:32px;opacity:.6"></i>
+          <p style="margin-top:10px">No profiles in this view.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="rejectModal">
+  <div class="box">
+    <h3><i class="fa-solid fa-circle-xmark" style="color:#ef4444"></i> Reject Profile</h3>
+    <p>Provide a reason — the employee will see it on their profile page.</p>
+    <textarea id="rejectReason" rows="3" style="width:100%;padding:10px;border-radius:8px;background:var(--glass);color:var(--text);border:1px solid var(--border)"></textarea>
+    <div class="actions">
+      <button class="btn ghost" id="rejectCancel">Cancel</button>
+      <button class="btn danger" id="rejectConfirm"><i class="fa-solid fa-check"></i> Reject</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supa.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/approvals.js"></script>
+</body>
+</html>

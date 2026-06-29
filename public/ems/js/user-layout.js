@@ -6,18 +6,19 @@ EMS.applyTheme();
   if (!data?.session) { location.href = "index.html"; return; }
   const user = data.session.user;
 
-  // Topbar identity
   const name = (user.user_metadata && user.user_metadata.full_name) || (user.email || "User").split("@")[0];
   const el = (id) => document.getElementById(id);
   if (el("userName"))    el("userName").textContent = name;
   if (el("userEmail"))   el("userEmail").textContent = user.email || "";
   if (el("userInitial")) el("userInitial").textContent = (name || "U").trim().charAt(0).toUpperCase();
 
-  // Sidebar
   const sb = el("sidebar");
   if (sb) {
     const path = location.pathname.split("/").pop() || "my-profile.html";
-    const items = [{ href: "my-profile.html", icon: "fa-id-card", label: "My Profile" }];
+    const items = [
+      { href: "my-profile.html", icon: "fa-id-card",             label: "My Profile" },
+      { href: "form16.html",     icon: "fa-file-invoice-dollar", label: "My Form 16" },
+    ];
     sb.innerHTML = `
       <div class="logo">
         <img src="assets/bccl-logo.jpeg" alt="BCCL" />

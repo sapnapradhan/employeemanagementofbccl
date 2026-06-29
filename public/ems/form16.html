@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — My Form 16</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-title"><i class="fa-solid fa-file-invoice-dollar"></i> &nbsp;My Form 16</div>
+      <div class="grow"></div>
+      <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      <div class="user" id="userBadge"><div class="avatar" id="userInitial">U</div><div><div style="font-size:13px;font-weight:600" id="userName">User</div><div style="font-size:11px;color:var(--text-muted)" id="userEmail">—</div></div></div>
+    </header>
+    <section class="content">
+      <div id="banner" class="status-banner info" style="display:none"></div>
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-list"></i> &nbsp;Tax Statements (Form 16)</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Financial Year</th><th>Source</th><th>Gross Salary</th><th>TDS</th><th>Issued</th><th style="text-align:right">Download</th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div id="emptyState" class="empty" style="display:none">
+          <i class="fa-solid fa-folder-open" style="font-size:32px;opacity:.6"></i>
+          <p style="margin-top:10px">No Form 16 issued yet. Once your profile is approved, your admin will publish your tax statement here.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supa.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/user-layout.js"></script>
+<script src="js/form16.js"></script>
+<script src="js/my-form16.js"></script>
+</body>
+</html>

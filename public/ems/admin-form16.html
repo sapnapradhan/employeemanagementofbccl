@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — Form 16 Management</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-title"><i class="fa-solid fa-file-invoice-dollar"></i> &nbsp;Form 16 Management</div>
+      <div class="grow"></div>
+      <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      <div class="user"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600">Admin</div><div style="font-size:11px;color:var(--text-muted)">BCCL HQ</div></div></div>
+    </header>
+    <section class="content">
+
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-plus"></i> &nbsp;Issue Form 16</h3></div>
+        <form id="issueForm" class="form-grid">
+          <div class="field no-icon">
+            <label>Employee (approved profiles)</label>
+            <select id="profileId" required></select>
+          </div>
+          <div class="field no-icon">
+            <label>Financial Year</label>
+            <input id="fy" placeholder="e.g. 2024-25" required />
+          </div>
+          <div class="field no-icon">
+            <label>Source</label>
+            <select id="source">
+              <option value="generated">Auto-generate from salary</option>
+              <option value="uploaded">Upload PDF</option>
+            </select>
+          </div>
+          <div class="field no-icon">
+            <label>Gross Salary (₹)</label>
+            <input id="gross" type="number" min="0" step="1" />
+          </div>
+          <div class="field no-icon">
+            <label>TDS Deducted (₹)</label>
+            <input id="tds" type="number" min="0" step="1" />
+          </div>
+          <div class="field no-icon">
+            <label>Sec 80C (₹)</label>
+            <input id="d80c" type="number" min="0" step="1" placeholder="PF, LIC, ELSS…" />
+          </div>
+          <div class="field no-icon">
+            <label>Standard Deduction (₹)</label>
+            <input id="std" type="number" min="0" step="1" value="50000" />
+          </div>
+          <div class="field no-icon">
+            <label>Professional Tax (₹)</label>
+            <input id="ptax" type="number" min="0" step="1" />
+          </div>
+          <div class="field no-icon" id="fileField" style="display:none;grid-column:1/-1">
+            <label>Form 16 PDF</label>
+            <input id="pdfFile" type="file" accept="application/pdf" />
+          </div>
+          <div class="field no-icon" style="grid-column:1/-1">
+            <label>Notes (optional)</label>
+            <textarea id="notes" rows="2" placeholder="Any remarks visible to the employee"></textarea>
+          </div>
+          <div class="form-actions" style="grid-column:1/-1">
+            <button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Form 16</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-list"></i> &nbsp;All Form 16 Records</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Employee</th><th>FY</th><th>Source</th><th>Gross</th><th>TDS</th>
+              <th>Created</th><th style="text-align:right">Actions</th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div id="emptyState" class="empty" style="display:none"><p>No Form 16 records yet.</p></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="js/supa.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/form16.js"></script>
+<script src="js/admin-form16.js"></script>
+</body>
+</html>
