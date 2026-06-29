@@ -1,14 +1,27 @@
-/* login.js — handles Admin (localStorage) and Employee (Supabase) auth */
+/* login.js — Employee (Supabase) + Admin (Supabase + admin role) */
 EMS.applyTheme();
 
-// If already authed (admin or user), bounce to the right page
 (async () => {
-  if (EMS.isAuthed()) { location.href = "dashboard.html"; return; }
+  // If already signed in to Supabase, send admins to dashboard, users to profile
   try {
     const { data } = await window.SUPA.auth.getSession();
-    if (data?.session) { location.href = "my-profile.html"; return; }
+    if (data?.session) {
+      const isAdmin = await checkIsAdmin();
+      location.href = isAdmin ? "dashboard.html" : "my-profile.html";
+      return;
+    }
   } catch (_) {}
+  // Legacy local-admin session
+  if (EMS.isAuthed()) { location.href = "dashboard.html"; }
 })();
+
+async function checkIsAdmin() {
+  try {
+    const { data, error } = await window.SUPA.rpc("is_admin");
+    if (error) return false;
+    return !!data;
+  } catch { return false; }
+}
 
 /* ---------- Tabs ---------- */
 document.querySelectorAll(".tab").forEach(btn => {
@@ -20,7 +33,7 @@ document.querySelectorAll(".tab").forEach(btn => {
   });
 });
 
-/* ---------- USER: signin / signup toggle ---------- */
+/* ---------- USER ---------- */
 let mode = "signin";
 const fName = document.getElementById("fName");
 const fConfirm = document.getElementById("fConfirm");
@@ -39,51 +52,71 @@ document.querySelectorAll(".seg-btn").forEach(b => {
   });
 });
 
-const userForm = document.getElementById("userForm");
-userForm.addEventListener("submit", async (e) => {
+document.getElementById("userForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   hideAlert("userAlert");
   const email = document.getElementById("uEmail").value.trim();
   const pass  = document.getElementById("uPass").value;
-
   if (pass.length < 6) return showAlert("userAlert", "Password must be at least 6 characters.");
 
   if (mode === "signup") {
     const name  = document.getElementById("uName").value.trim();
     const pass2 = document.getElementById("uPass2").value;
-    if (!name)             return showAlert("userAlert", "Please enter your full name.");
-    if (pass !== pass2)    return showAlert("userAlert", "Passwords do not match.");
-
+    if (!name)          return showAlert("userAlert", "Please enter your full name.");
+    if (pass !== pass2) return showAlert("userAlert", "Passwords do not match.");
     const { data, error } = await window.SUPA.auth.signUp({
       email, password: pass,
       options: { data: { full_name: name }, emailRedirectTo: window.location.origin + "/ems/index.html" }
     });
     if (error) return showAlert("userAlert", error.message);
-    if (!data.session) {
-      // Auto-confirm is on; this branch is unlikely but handle anyway.
-      return showAlert("userAlert", "Check your email to confirm your account.", "info");
-    }
+    if (!data.session) return showAlert("userAlert", "Check your email to confirm your account.");
     EMS.toast("Account created!");
-    setTimeout(() => location.href = "my-profile.html", 500);
+    setTimeout(() => location.href = "my-profile.html", 400);
   } else {
     const { error } = await window.SUPA.auth.signInWithPassword({ email, password: pass });
     if (error) return showAlert("userAlert", error.message);
+    const isAdmin = await checkIsAdmin();
     EMS.toast("Signed in");
-    setTimeout(() => location.href = "my-profile.html", 400);
+    setTimeout(() => location.href = isAdmin ? "dashboard.html" : "my-profile.html", 300);
   }
 });
 
 /* ---------- ADMIN ---------- */
-const adminForm = document.getElementById("adminForm");
-adminForm.addEventListener("submit", (e) => {
+document.getElementById("adminForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const u = document.getElementById("aUser").value.trim();
-  const p = document.getElementById("aPass").value;
-  if (EMS.login(u, p)) {
+  hideAlert("adminAlert");
+  const email = document.getElementById("aEmail").value.trim();
+  const pass  = document.getElementById("aPass").value;
+  const { error } = await window.SUPA.auth.signInWithPassword({ email, password: pass });
+  if (error) return showAlert("adminAlert", error.message);
+  const isAdmin = await checkIsAdmin();
+  if (!isAdmin) {
+    await window.SUPA.auth.signOut();
+    return showAlert("adminAlert", "This account does not have admin access. Use the Claim admin link below if no admin exists yet.");
+  }
+  // Also mark legacy local-admin so existing pages work
+  sessionStorage.setItem("bccl_ems_auth", "1");
+  EMS.seedIfEmpty();
+  EMS.toast("Welcome, admin");
+  setTimeout(() => location.href = "dashboard.html", 300);
+});
+
+document.getElementById("claimAdminLink").addEventListener("click", async (e) => {
+  e.preventDefault();
+  hideAlert("adminAlert");
+  const { data: sess } = await window.SUPA.auth.getSession();
+  if (!sess?.session) {
+    return showAlert("adminAlert", "Sign in first (Employee tab) using the account you want to promote, then return here and click again.");
+  }
+  const { data, error } = await window.SUPA.rpc("claim_admin_if_none");
+  if (error) return showAlert("adminAlert", error.message);
+  if (data === true) {
+    sessionStorage.setItem("bccl_ems_auth", "1");
     EMS.seedIfEmpty();
-    location.href = "dashboard.html";
+    EMS.toast("You are now admin");
+    setTimeout(() => location.href = "dashboard.html", 400);
   } else {
-    showAlert("adminAlert", "Invalid admin credentials.");
+    showAlert("adminAlert", "An admin already exists. Ask them to grant you the admin role.");
   }
 });
 

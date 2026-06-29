@@ -1,5 +1,31 @@
 /* dashboard.js */
-(function () {
+(async function () {
+  // Pending approvals widget (Supabase)
+  try {
+    const SUPA = window.SUPA;
+    if (SUPA) {
+      const { data } = await SUPA.from("employee_profiles")
+        .select("id,name,employee_code,department,designation,submitted_at,status")
+        .eq("status", "pending").order("submitted_at", { ascending: false }).limit(5);
+      const w = document.getElementById("pendingWidget");
+      if (w) {
+        if (!data?.length) {
+          w.innerHTML = `<div class="empty"><i class="fa-solid fa-circle-check" style="color:#10b981"></i> &nbsp;No pending approvals — you're all caught up.</div>`;
+        } else {
+          w.innerHTML = data.map(r => `
+            <div class="item">
+              <div class="av">${(r.name||"?").trim().charAt(0).toUpperCase()}</div>
+              <div class="meta">
+                <div class="n">${r.name||"—"} <span class="badge">${r.employee_code||""}</span> <span class="pill warn">Pending</span></div>
+                <div class="d">${r.designation||""} · ${r.department||""} · submitted ${r.submitted_at ? new Date(r.submitted_at).toLocaleString() : ""}</div>
+              </div>
+              <a class="btn ghost" href="approvals.html"><i class="fa-solid fa-up-right-from-square"></i> Review</a>
+            </div>`).join("");
+        }
+      }
+    }
+  } catch (e) { /* admin without supa session: skip */ }
+
   const list = EMS.all();
   const total = list.length;
   const salaries = list.map(e => Number(e.salary || 0));

@@ -65,27 +65,31 @@
       <p class="hint">New here? Click <b>Sign Up</b> to create an account.</p>
     </div>
 
-    <!-- ADMIN (localStorage) -->
+    <!-- ADMIN (Supabase + admin role) -->
     <div class="pane" id="paneAdmin">
       <form id="adminForm" autocomplete="off">
         <div class="field">
-          <label>Username</label>
-          <div class="input-wrap"><i class="fa-solid fa-user"></i>
-            <input id="aUser" type="text" placeholder="admin" required />
+          <label>Admin Email</label>
+          <div class="input-wrap"><i class="fa-solid fa-envelope"></i>
+            <input id="aEmail" type="email" placeholder="admin@bccl.in" required />
           </div>
         </div>
         <div class="field">
           <label>Password</label>
           <div class="input-wrap"><i class="fa-solid fa-lock"></i>
-            <input id="aPass" type="password" placeholder="••••••••" required />
+            <input id="aPass" type="password" placeholder="••••••••" required minlength="6" />
           </div>
         </div>
         <div class="alert" id="adminAlert"><i class="fa-solid fa-circle-exclamation"></i> <span></span></div>
         <div style="margin-top: 22px;">
-          <button class="btn block" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In as Admin</button>
+          <button class="btn block" type="submit"><i class="fa-solid fa-user-shield"></i> Sign In as Admin</button>
         </div>
+        <p class="hint">
+          First time? Sign up via the <b>Employee</b> tab, then come back here and click
+          <a href="#" id="claimAdminLink" style="color:var(--primary-2)">Claim admin role</a>
+          (works only if no admin exists yet).
+        </p>
       </form>
-      <p class="hint">Admin demo — <b>admin</b> / <b>admin123</b></p>
     </div>
   </div>
 </div>
