@@ -21,7 +21,7 @@
       <button class="tab" data-tab="admin"><i class="fa-solid fa-user-shield"></i> Admin</button>
     </div>
 
-    <!-- USER (Supabase auth) -->
+    <!-- USER -->
     <div class="pane active" id="paneUser">
       <div class="seg">
         <button class="seg-btn active" data-mode="signin">Sign In</button>
@@ -62,16 +62,16 @@
           </button>
         </div>
       </form>
-      <p class="hint">New here? Click <b>Sign Up</b> to create an account.</p>
+      <p class="hint">New here? Click <b>Sign Up</b> to create your employee account.</p>
     </div>
 
-    <!-- ADMIN (Supabase + admin role) -->
+    <!-- ADMIN -->
     <div class="pane" id="paneAdmin">
       <form id="adminForm" autocomplete="off">
         <div class="field">
           <label>Admin Email</label>
           <div class="input-wrap"><i class="fa-solid fa-envelope"></i>
-            <input id="aEmail" type="email" placeholder="admin@bccl.in" required />
+            <input id="aEmail" type="email" value="admin@bccl.com" required />
           </div>
         </div>
         <div class="field">
@@ -85,10 +85,15 @@
           <button class="btn block" type="submit"><i class="fa-solid fa-user-shield"></i> Sign In as Admin</button>
         </div>
         <p class="hint">
-          First time? Sign up via the <b>Employee</b> tab, then come back here and click
-          <a href="#" id="claimAdminLink" style="color:var(--primary-2)">Claim admin role</a>
-          (works only if no admin exists yet).
+          Dev admin: <b>admin@bccl.com</b> / <b>admin123</b>. First time?
+          Use the <b>Sign Up</b> button below (one time only) to create this account —
+          the admin role is granted automatically.
         </p>
+        <div style="margin-top: 8px">
+          <button class="btn ghost block" type="button" id="seedAdminBtn">
+            <i class="fa-solid fa-key"></i> Sign Up admin@bccl.com (one-time)
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -97,6 +102,7 @@
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supa.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/login.js"></script>

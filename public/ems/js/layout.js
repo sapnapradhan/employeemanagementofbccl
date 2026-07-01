@@ -1,22 +1,20 @@
-/* layout.js - admin sidebar, theme, auth guard (local + Supabase admin) */
+/* layout.js — admin shell: Supabase-only guard, sidebar, theme, logout. */
 EMS.applyTheme();
-EMS.seedIfEmpty();
 
 (async function guard() {
-  // Require either Supabase admin OR legacy local-admin session
   let isAdmin = false;
   try {
-    const { data } = await window.SUPA?.auth.getSession() || {};
+    const { data } = await window.SUPA.auth.getSession();
     if (data?.session) {
       const r = await window.SUPA.rpc("is_admin");
       isAdmin = !!r.data;
     }
   } catch (_) {}
-  if (!isAdmin && !EMS.isAuthed()) {
+  if (!isAdmin) {
     location.href = "index.html";
     return;
   }
-  window.__IS_SUPA_ADMIN = isAdmin;
+  window.__IS_ADMIN = true;
 })();
 
 (function buildSidebar() {
@@ -24,11 +22,11 @@ EMS.seedIfEmpty();
   if (!sb) return;
   const path = location.pathname.split("/").pop() || "dashboard.html";
   const items = [
-    { href: "dashboard.html",     icon: "fa-gauge-high",         label: "Dashboard" },
-    { href: "approvals.html",     icon: "fa-user-check",         label: "Approvals" },
-    { href: "admin-form16.html",  icon: "fa-file-invoice-dollar",label: "Form 16" },
-    { href: "add-employee.html",  icon: "fa-user-plus",          label: "Add Employee" },
-    { href: "view-employee.html", icon: "fa-users",              label: "All Employees" },
+    { href: "dashboard.html",     icon: "fa-gauge-high",          label: "Dashboard" },
+    { href: "approvals.html",     icon: "fa-user-check",          label: "Approvals" },
+    { href: "view-employee.html", icon: "fa-users",               label: "Employees" },
+    { href: "admin-form16.html",  icon: "fa-file-invoice-dollar", label: "Form 16" },
+    { href: "bulk-form16.html",   icon: "fa-file-arrow-up",       label: "Bulk Form 16" },
   ];
   sb.innerHTML = `
     <div class="logo">
@@ -45,8 +43,8 @@ EMS.seedIfEmpty();
   `;
   document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     e.preventDefault();
-    try { await window.SUPA?.auth.signOut(); } catch (_) {}
-    EMS.logout();
+    try { await window.SUPA.auth.signOut(); } catch (_) {}
+    location.href = "index.html";
   });
 })();
 
