@@ -17,17 +17,32 @@ export type Database = {
       employee_profiles: {
         Row: {
           aadhaar: string | null
+          aadhaar_back_url: string | null
+          aadhaar_front_url: string | null
+          aadhaar_number: string | null
+          aadhaar_verified_at: string | null
+          aadhaar_verified_by: string | null
+          account_number: string | null
           address: string | null
           approved_at: string | null
+          bank_name: string | null
           created_at: string
+          deleted_at: string | null
           department: string | null
           designation: string | null
           dob: string | null
           email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
           employee_code: string
           father_name: string | null
           id: string
+          ifsc: string | null
           name: string
+          pan_front_url: string | null
+          pan_number: string | null
+          pan_verified_at: string | null
+          pan_verified_by: string | null
           phone: string | null
           photo_url: string | null
           qualification: string | null
@@ -40,17 +55,32 @@ export type Database = {
         }
         Insert: {
           aadhaar?: string | null
+          aadhaar_back_url?: string | null
+          aadhaar_front_url?: string | null
+          aadhaar_number?: string | null
+          aadhaar_verified_at?: string | null
+          aadhaar_verified_by?: string | null
+          account_number?: string | null
           address?: string | null
           approved_at?: string | null
+          bank_name?: string | null
           created_at?: string
+          deleted_at?: string | null
           department?: string | null
           designation?: string | null
           dob?: string | null
           email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
           employee_code: string
           father_name?: string | null
           id?: string
+          ifsc?: string | null
           name: string
+          pan_front_url?: string | null
+          pan_number?: string | null
+          pan_verified_at?: string | null
+          pan_verified_by?: string | null
           phone?: string | null
           photo_url?: string | null
           qualification?: string | null
@@ -63,17 +93,32 @@ export type Database = {
         }
         Update: {
           aadhaar?: string | null
+          aadhaar_back_url?: string | null
+          aadhaar_front_url?: string | null
+          aadhaar_number?: string | null
+          aadhaar_verified_at?: string | null
+          aadhaar_verified_by?: string | null
+          account_number?: string | null
           address?: string | null
           approved_at?: string | null
+          bank_name?: string | null
           created_at?: string
+          deleted_at?: string | null
           department?: string | null
           designation?: string | null
           dob?: string | null
           email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
           employee_code?: string
           father_name?: string | null
           id?: string
+          ifsc?: string | null
           name?: string
+          pan_front_url?: string | null
+          pan_number?: string | null
+          pan_verified_at?: string | null
+          pan_verified_by?: string | null
           phone?: string | null
           photo_url?: string | null
           qualification?: string | null
@@ -140,7 +185,89 @@ export type Database = {
             referencedRelation: "employee_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "form16_documents_employee_profile_id_fkey"
+            columns: ["employee_profile_id"]
+            isOneToOne: false
+            referencedRelation: "employee_self_view"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          read_at: string | null
+          related_id: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          related_id?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          related_id?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profile_change_requests: {
+        Row: {
+          changes: Json
+          created_at: string
+          file_moves: Json
+          id: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          submitted_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          changes?: Json
+          created_at?: string
+          file_moves?: Json
+          id?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          changes?: Json
+          created_at?: string
+          file_moves?: Json
+          id?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
@@ -165,10 +292,132 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      employee_self_view: {
+        Row: {
+          aadhaar_back_url: string | null
+          aadhaar_front_url: string | null
+          aadhaar_masked: string | null
+          aadhaar_verified_at: string | null
+          account_number_masked: string | null
+          address: string | null
+          approved_at: string | null
+          bank_name: string | null
+          created_at: string | null
+          department: string | null
+          designation: string | null
+          dob: string | null
+          email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          employee_code: string | null
+          father_name: string | null
+          id: string | null
+          ifsc: string | null
+          name: string | null
+          pan_front_url: string | null
+          pan_masked: string | null
+          pan_verified_at: string | null
+          phone: string | null
+          photo_url: string | null
+          qualification: string | null
+          rejection_reason: string | null
+          salary: number | null
+          status: string | null
+          submitted_at: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          aadhaar_back_url?: string | null
+          aadhaar_front_url?: string | null
+          aadhaar_masked?: never
+          aadhaar_verified_at?: string | null
+          account_number_masked?: never
+          address?: string | null
+          approved_at?: string | null
+          bank_name?: string | null
+          created_at?: string | null
+          department?: string | null
+          designation?: string | null
+          dob?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          employee_code?: string | null
+          father_name?: string | null
+          id?: string | null
+          ifsc?: string | null
+          name?: string | null
+          pan_front_url?: string | null
+          pan_masked?: never
+          pan_verified_at?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          qualification?: string | null
+          rejection_reason?: string | null
+          salary?: number | null
+          status?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          aadhaar_back_url?: string | null
+          aadhaar_front_url?: string | null
+          aadhaar_masked?: never
+          aadhaar_verified_at?: string | null
+          account_number_masked?: never
+          address?: string | null
+          approved_at?: string | null
+          bank_name?: string | null
+          created_at?: string | null
+          department?: string | null
+          designation?: string | null
+          dob?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          employee_code?: string | null
+          father_name?: string | null
+          id?: string | null
+          ifsc?: string | null
+          name?: string | null
+          pan_front_url?: string | null
+          pan_masked?: never
+          pan_verified_at?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          qualification?: string | null
+          rejection_reason?: string | null
+          salary?: number | null
+          status?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      claim_admin_if_none: { Args: never; Returns: boolean }
+      approve_change_request: { Args: { _req_id: string }; Returns: undefined }
+      bulk_form16_lookup: {
+        Args: { _pan: string }
+        Returns: {
+          employee_name: string
+          employee_profile_id: string
+          match_status: string
+          user_id: string
+        }[]
+      }
+      bulk_form16_upload_finalize: {
+        Args: {
+          _file_path: string
+          _financial_year: string
+          _notes?: string
+          _pan: string
+        }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -177,6 +426,22 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: never; Returns: boolean }
+      notify_user: {
+        Args: {
+          _body: string
+          _related_id?: string
+          _title: string
+          _type: string
+          _user_id: string
+        }
+        Returns: undefined
+      }
+      reject_change_request: {
+        Args: { _reason: string; _req_id: string }
+        Returns: undefined
+      }
+      verify_aadhaar: { Args: { _user_id: string }; Returns: undefined }
+      verify_pan: { Args: { _user_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "user"
