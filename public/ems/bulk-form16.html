@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — Bulk Form 16 Upload</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<style>
+  .dropzone { border: 2px dashed var(--border); border-radius: 12px; padding: 30px; text-align: center; cursor: pointer; transition: .2s; }
+  .dropzone.drag { background: var(--glass-strong); border-color: var(--primary-2); }
+  .file-list { display: grid; gap: 8px; margin-top: 12px; }
+  .file-row { display: grid; grid-template-columns: 1fr 130px 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--glass); font-size: 13px; }
+  .file-row .name { font-weight: 600; word-break: break-all; }
+  .file-row .pill { justify-self: start; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-title"><i class="fa-solid fa-file-arrow-up"></i> &nbsp;Bulk Form 16 Upload</div>
+      <div class="grow"></div>
+      <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      <div class="user"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600">Admin</div><div style="font-size:11px;color:var(--text-muted)">BCCL HQ</div></div></div>
+    </header>
+    <section class="content">
+
+      <div class="status-banner info" style="display:flex">
+        <i class="fa-solid fa-circle-info"></i>
+        <div>
+          Rename each PDF to the employee's PAN number, e.g. <b>ABCDE1234F.pdf</b>. Files with
+          <b>no matching PAN</b> are listed as Unmatched. Files whose PAN maps to <b>more than one employee</b>
+          are blocked with a Duplicate PAN error and never uploaded.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="head">
+          <h3><i class="fa-solid fa-cloud-arrow-up"></i> &nbsp;Select PDFs</h3>
+        </div>
+
+        <div class="form-grid">
+          <div class="field no-icon">
+            <label>Financial Year</label>
+            <input id="fy" placeholder="e.g. 2024-25" />
+          </div>
+          <div class="field no-icon">
+            <label>Notes (optional, applied to all files)</label>
+            <input id="notes" placeholder="" />
+          </div>
+        </div>
+
+        <label for="pdfInput" class="dropzone" id="dropzone">
+          <i class="fa-solid fa-file-pdf" style="font-size:32px;color:var(--primary-2)"></i>
+          <div style="margin-top:8px"><b>Drag &amp; drop</b> PDFs here, or click to choose.</div>
+          <div style="color:var(--text-muted);font-size:12px;margin-top:4px">Filename must be the PAN — e.g. ABCDE1234F.pdf</div>
+        </label>
+        <input id="pdfInput" type="file" accept="application/pdf" multiple hidden />
+
+        <div class="form-actions" style="margin-top: 12px">
+          <button class="btn ghost" type="button" id="clearBtn"><i class="fa-solid fa-eraser"></i> Clear</button>
+          <button class="btn"       type="button" id="uploadBtn"><i class="fa-solid fa-upload"></i> Upload matched files</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-list-check"></i> &nbsp;Preview &amp; Validation</h3></div>
+        <div class="file-list" id="fileList"></div>
+        <div id="listEmpty" class="empty">Select files to preview matching results.</div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supa.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/bulk-form16.js"></script>
+</body>
+</html>

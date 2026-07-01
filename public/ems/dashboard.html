@@ -12,37 +12,45 @@
   <aside class="sidebar" id="sidebar"></aside>
   <main class="main">
     <header class="topbar">
-      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
       <div class="page-title"><i class="fa-solid fa-gauge-high"></i> &nbsp;Dashboard</div>
       <div class="grow"></div>
-      <button class="icon-btn" id="themeToggle" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+      <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       <div class="user"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600">Admin</div><div style="font-size:11px;color:var(--text-muted)">BCCL HQ</div></div></div>
     </header>
     <section class="content">
       <div class="grid cards">
-        <div class="card stat primary"><div class="head"><h3>Total Employees</h3><div class="ic"><i class="fa-solid fa-users"></i></div></div><div class="num" id="kpiTotal">0</div><div class="lbl">Active records</div></div>
-        <div class="card stat warn"><div class="head"><h3>Maximum Salary</h3><div class="ic"><i class="fa-solid fa-indian-rupee-sign"></i></div></div><div class="num" id="kpiMax">₹0</div><div class="lbl">Highest paid</div></div>
-        <div class="card stat success"><div class="head"><h3>Average Salary</h3><div class="ic"><i class="fa-solid fa-chart-line"></i></div></div><div class="num" id="kpiAvg">₹0</div><div class="lbl">Across workforce</div></div>
-        <div class="card stat purple"><div class="head"><h3>Departments</h3><div class="ic"><i class="fa-solid fa-building"></i></div></div><div class="num" id="kpiDept">0</div><div class="lbl">Active units</div></div>
+        <div class="card stat primary"><div class="head"><h3>Total Employees</h3><div class="ic"><i class="fa-solid fa-users"></i></div></div><div class="num" id="kpiTotal">0</div></div>
+        <div class="card stat warn"><div class="head"><h3>Maximum Salary</h3><div class="ic"><i class="fa-solid fa-indian-rupee-sign"></i></div></div><div class="num" id="kpiMax">₹0</div></div>
+        <div class="card stat success"><div class="head"><h3>Average Salary</h3><div class="ic"><i class="fa-solid fa-chart-line"></i></div></div><div class="num" id="kpiAvg">₹0</div></div>
+        <div class="card stat purple"><div class="head"><h3>Departments</h3><div class="ic"><i class="fa-solid fa-building"></i></div></div><div class="num" id="kpiDept">0</div></div>
+      </div>
+
+      <div class="grid cards">
+        <div class="card stat warn"><div class="head"><h3>Pending Requests</h3><div class="ic"><i class="fa-solid fa-user-clock"></i></div></div><div class="num" id="kPendReq">0</div><a class="btn ghost" href="approvals.html" style="margin-top:8px"><i class="fa-solid fa-arrow-right"></i> Review</a></div>
+        <div class="card stat primary"><div class="head"><h3>Pending PAN Verification</h3><div class="ic"><i class="fa-solid fa-id-card"></i></div></div><div class="num" id="kPendPan">0</div><a class="btn ghost" href="view-employee.html" style="margin-top:8px"><i class="fa-solid fa-arrow-right"></i> Employees</a></div>
+        <div class="card stat purple"><div class="head"><h3>Pending Aadhaar Verification</h3><div class="ic"><i class="fa-solid fa-id-card-clip"></i></div></div><div class="num" id="kPendAad">0</div><a class="btn ghost" href="view-employee.html" style="margin-top:8px"><i class="fa-solid fa-arrow-right"></i> Employees</a></div>
       </div>
 
       <div class="grid two">
         <div class="card">
-          <div class="head"><h3><i class="fa-solid fa-chart-column"></i> &nbsp;Salary by Employee</h3><div class="ic"><i class="fa-solid fa-chart-bar"></i></div></div>
+          <div class="head"><h3><i class="fa-solid fa-chart-column"></i> &nbsp;Top Salaries</h3></div>
           <div class="chart-wrap"><canvas id="salaryChart"></canvas></div>
         </div>
         <div class="card">
-          <div class="head"><h3><i class="fa-solid fa-sitemap"></i> &nbsp;Department-wise Distribution</h3><div class="ic"><i class="fa-solid fa-chart-pie"></i></div></div>
+          <div class="head"><h3><i class="fa-solid fa-sitemap"></i> &nbsp;Department Distribution</h3></div>
           <div class="chart-wrap"><canvas id="deptChart"></canvas></div>
         </div>
       </div>
 
       <div class="card">
-        <div class="head">
-          <h3><i class="fa-solid fa-user-clock"></i> &nbsp;Pending Profile Approvals</h3>
-          <a class="btn ghost" href="approvals.html"><i class="fa-solid fa-arrow-right"></i> Review all</a>
-        </div>
+        <div class="head"><h3><i class="fa-solid fa-user-clock"></i> &nbsp;Pending Change Requests</h3><a class="btn ghost" href="approvals.html"><i class="fa-solid fa-arrow-right"></i> Review all</a></div>
         <div id="pendingWidget" class="recent"><div class="empty">Loading…</div></div>
+      </div>
+
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-bell"></i> &nbsp;Recent Notifications</h3></div>
+        <div id="notifWidget" class="recent"><div class="empty">Loading…</div></div>
       </div>
 
       <div class="card">
@@ -55,6 +63,7 @@
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supa.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/layout.js"></script>

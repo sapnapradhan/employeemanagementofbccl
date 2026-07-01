@@ -13,17 +13,17 @@
   <main class="main">
     <header class="topbar">
       <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
-      <div class="page-title"><i class="fa-solid fa-user-check"></i> &nbsp;Profile Approvals</div>
+      <div class="page-title"><i class="fa-solid fa-user-check"></i> &nbsp;Profile Change Requests</div>
       <div class="grow"></div>
       <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       <div class="user"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600">Admin</div><div style="font-size:11px;color:var(--text-muted)">BCCL HQ</div></div></div>
     </header>
     <section class="content">
       <div class="grid cards">
-        <div class="card stat warn"><div class="head"><h3>Pending</h3><div class="ic"><i class="fa-solid fa-hourglass-half"></i></div></div><div class="num" id="kPending">0</div><div class="lbl">Awaiting review</div></div>
+        <div class="card stat warn"><div class="head"><h3>Pending Requests</h3><div class="ic"><i class="fa-solid fa-hourglass-half"></i></div></div><div class="num" id="kPending">0</div></div>
         <div class="card stat success"><div class="head"><h3>Approved</h3><div class="ic"><i class="fa-solid fa-circle-check"></i></div></div><div class="num" id="kApproved">0</div></div>
         <div class="card stat primary"><div class="head"><h3>Rejected</h3><div class="ic"><i class="fa-solid fa-circle-xmark"></i></div></div><div class="num" id="kRejected">0</div></div>
-        <div class="card stat purple"><div class="head"><h3>Total Submissions</h3><div class="ic"><i class="fa-solid fa-users"></i></div></div><div class="num" id="kTotal">0</div></div>
+        <div class="card stat purple"><div class="head"><h3>Total</h3><div class="ic"><i class="fa-solid fa-inbox"></i></div></div><div class="num" id="kTotal">0</div></div>
       </div>
 
       <div class="card">
@@ -39,21 +39,10 @@
         </div>
       </div>
 
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th></th><th>Employee Code</th><th>Name</th><th>Email</th>
-              <th>Department</th><th>Designation</th><th>Salary</th>
-              <th>Status</th><th>Submitted</th><th style="text-align:right">Actions</th>
-            </tr></thead>
-            <tbody id="rows"></tbody>
-          </table>
-        </div>
-        <div id="emptyState" class="empty" style="display:none">
-          <i class="fa-solid fa-inbox" style="font-size:32px;opacity:.6"></i>
-          <p style="margin-top:10px">No profiles in this view.</p>
-        </div>
+      <div id="reqList"></div>
+      <div id="emptyState" class="empty" style="display:none">
+        <i class="fa-solid fa-inbox" style="font-size:32px;opacity:.6"></i>
+        <p style="margin-top:10px">No change requests in this view.</p>
       </div>
     </section>
   </main>
@@ -61,7 +50,7 @@
 
 <div class="modal" id="rejectModal">
   <div class="box">
-    <h3><i class="fa-solid fa-circle-xmark" style="color:#ef4444"></i> Reject Profile</h3>
+    <h3><i class="fa-solid fa-circle-xmark" style="color:#ef4444"></i> Reject change request</h3>
     <p>Provide a reason — the employee will see it on their profile page.</p>
     <textarea id="rejectReason" rows="3" style="width:100%;padding:10px;border-radius:8px;background:var(--glass);color:var(--text);border:1px solid var(--border)"></textarea>
     <div class="actions">
@@ -73,8 +62,10 @@
 
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supa.js"></script>
 <script src="js/storage.js"></script>
+<script src="js/masking.js"></script>
 <script src="js/layout.js"></script>
 <script src="js/approvals.js"></script>
 </body>

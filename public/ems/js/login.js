@@ -1,18 +1,19 @@
-/* login.js — Employee (Supabase) + Admin (Supabase + admin role) */
+/* login.js — Supabase auth for both Employees and the BCCL admin.
+ * Admin role is granted by the database trigger on signup for BCCL.CONFIG.ADMIN_EMAIL.
+ * No self-promotion / claim-admin flow exists.
+ */
 EMS.applyTheme();
 
+const ADMIN_EMAIL = (window.BCCL?.CONFIG?.ADMIN_EMAIL) || "admin@bccl.com";
+
 (async () => {
-  // If already signed in to Supabase, send admins to dashboard, users to profile
   try {
     const { data } = await window.SUPA.auth.getSession();
     if (data?.session) {
       const isAdmin = await checkIsAdmin();
       location.href = isAdmin ? "dashboard.html" : "my-profile.html";
-      return;
     }
   } catch (_) {}
-  // Legacy local-admin session
-  if (EMS.isAuthed()) { location.href = "dashboard.html"; }
 })();
 
 async function checkIsAdmin() {
@@ -23,7 +24,7 @@ async function checkIsAdmin() {
   } catch { return false; }
 }
 
-/* ---------- Tabs ---------- */
+/* Tabs */
 document.querySelectorAll(".tab").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
@@ -33,7 +34,7 @@ document.querySelectorAll(".tab").forEach(btn => {
   });
 });
 
-/* ---------- USER ---------- */
+/* USER (employee) */
 let mode = "signin";
 const fName = document.getElementById("fName");
 const fConfirm = document.getElementById("fConfirm");
@@ -45,7 +46,7 @@ document.querySelectorAll(".seg-btn").forEach(b => {
     b.classList.add("active");
     mode = b.dataset.mode;
     const signup = mode === "signup";
-    fName.style.display = signup ? "" : "none";
+    fName.style.display    = signup ? "" : "none";
     fConfirm.style.display = signup ? "" : "none";
     submitLabel.textContent = signup ? "Create Account" : "Sign In";
     hideAlert("userAlert");
@@ -58,6 +59,9 @@ document.getElementById("userForm").addEventListener("submit", async (e) => {
   const email = document.getElementById("uEmail").value.trim();
   const pass  = document.getElementById("uPass").value;
   if (pass.length < 6) return showAlert("userAlert", "Password must be at least 6 characters.");
+  if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+    return showAlert("userAlert", "That email is reserved for the admin — please use the Admin tab.");
+  }
 
   if (mode === "signup") {
     const name  = document.getElementById("uName").value.trim();
@@ -81,7 +85,7 @@ document.getElementById("userForm").addEventListener("submit", async (e) => {
   }
 });
 
-/* ---------- ADMIN ---------- */
+/* ADMIN */
 document.getElementById("adminForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   hideAlert("adminAlert");
@@ -92,32 +96,32 @@ document.getElementById("adminForm").addEventListener("submit", async (e) => {
   const isAdmin = await checkIsAdmin();
   if (!isAdmin) {
     await window.SUPA.auth.signOut();
-    return showAlert("adminAlert", "This account does not have admin access. Use the Claim admin link below if no admin exists yet.");
+    return showAlert("adminAlert",
+      "This account does not have admin access. Admin roles are granted only by the database.");
   }
-  // Also mark legacy local-admin so existing pages work
-  sessionStorage.setItem("bccl_ems_auth", "1");
-  EMS.seedIfEmpty();
   EMS.toast("Welcome, admin");
   setTimeout(() => location.href = "dashboard.html", 300);
 });
 
-document.getElementById("claimAdminLink").addEventListener("click", async (e) => {
-  e.preventDefault();
+/* One-time helper: create the permanent admin account if it does not exist yet.
+   The database trigger will automatically grant the admin role. */
+document.getElementById("seedAdminBtn").addEventListener("click", async () => {
   hideAlert("adminAlert");
-  const { data: sess } = await window.SUPA.auth.getSession();
-  if (!sess?.session) {
-    return showAlert("adminAlert", "Sign in first (Employee tab) using the account you want to promote, then return here and click again.");
-  }
-  const { data, error } = await window.SUPA.rpc("claim_admin_if_none");
+  const email = ADMIN_EMAIL;
+  const pass  = window.BCCL.CONFIG.DEFAULT_ADMIN_PASSWORD;
+  const { data, error } = await window.SUPA.auth.signUp({
+    email, password: pass,
+    options: {
+      data: { full_name: "BCCL Admin" },
+      emailRedirectTo: window.location.origin + "/ems/index.html"
+    }
+  });
   if (error) return showAlert("adminAlert", error.message);
-  if (data === true) {
-    sessionStorage.setItem("bccl_ems_auth", "1");
-    EMS.seedIfEmpty();
-    EMS.toast("You are now admin");
-    setTimeout(() => location.href = "dashboard.html", 400);
-  } else {
-    showAlert("adminAlert", "An admin already exists. Ask them to grant you the admin role.");
+  if (!data.session) {
+    return showAlert("adminAlert", "Admin created — confirm the email (if required) then sign in.");
   }
+  EMS.toast("Admin created — signing in…");
+  setTimeout(() => location.href = "dashboard.html", 500);
 });
 
 function showAlert(id, msg) {

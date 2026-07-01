@@ -16,7 +16,10 @@
       <div class="page-title"><i class="fa-solid fa-id-card"></i> &nbsp;<span>My Employee Profile</span></div>
       <div class="grow"></div>
       <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
-      <div class="user" id="userBadge"><div class="avatar" id="userInitial">U</div><div><div style="font-size:13px;font-weight:600" id="userName">User</div><div style="font-size:11px;color:var(--text-muted)" id="userEmail">—</div></div></div>
+      <div class="user" id="userBadge">
+        <div class="avatar" id="userInitial">U</div>
+        <div><div style="font-size:13px;font-weight:600" id="userName">User</div><div style="font-size:11px;color:var(--text-muted)" id="userEmail">—</div></div>
+      </div>
     </header>
     <section class="content">
 
@@ -29,14 +32,16 @@
           <div style="flex:1">
             <label class="btn ghost" for="photoInput" id="photoUploadBtn"><i class="fa-solid fa-upload"></i> Upload Photo</label>
             <input id="photoInput" type="file" accept="image/*" hidden />
-            <button class="btn danger" id="removePhoto" type="button" style="display:none"><i class="fa-solid fa-trash"></i> Remove</button>
-            <p class="hint" style="text-align:left;margin-top:8px">PNG/JPG up to 5 MB.</p>
+            <p class="hint" style="text-align:left;margin-top:8px">PNG/JPG up to 5 MB. Photo change requires admin approval.</p>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="head"><h3><i class="fa-solid fa-id-badge"></i> &nbsp;My Information</h3><div class="ic"><i class="fa-solid fa-pen-to-square"></i></div></div>
+        <div class="head">
+          <h3><i class="fa-solid fa-id-badge"></i> &nbsp;My Information</h3>
+          <div class="ic"><i class="fa-solid fa-pen-to-square"></i></div>
+        </div>
         <form id="profileForm" novalidate>
           <fieldset id="profileFieldset" style="border:0;padding:0;margin:0">
           <div class="form-grid">
@@ -45,7 +50,6 @@
             <div class="field no-icon"><label>Father's Name</label><input id="father_name" placeholder="Father's name" /></div>
             <div class="field no-icon"><label>Date of Birth</label><input id="dob" type="date" /></div>
             <div class="field no-icon"><label>Phone Number</label><input id="phone" inputmode="numeric" maxlength="10" placeholder="10-digit mobile" /></div>
-            <div class="field no-icon"><label>Aadhaar Number</label><input id="aadhaar" inputmode="numeric" maxlength="12" placeholder="12-digit Aadhaar" /></div>
             <div class="field no-icon"><label>Email</label><input id="email" type="email" placeholder="name@bccl.in" /></div>
             <div class="field no-icon"><label>Qualification</label><input id="qualification" placeholder="e.g. B.Tech, MBA" /></div>
             <div class="field no-icon"><label>Designation</label><input id="designation" placeholder="e.g. Engineer" /></div>
@@ -60,13 +64,66 @@
             <div class="field no-icon"><label>Salary (₹)</label><input id="salary" type="number" min="0" placeholder="Monthly salary" /></div>
             <div class="field no-icon" style="grid-column: 1 / -1"><label>Address</label><textarea id="address" rows="2" placeholder="Residential address"></textarea></div>
           </div>
-          <div class="form-actions">
-            <button class="btn danger" type="button" id="deleteProfile"><i class="fa-solid fa-trash"></i> Delete Profile</button>
-            <button class="btn" type="submit" id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> <span id="saveLabel">Save Profile</span></button>
-          </div>
           </fieldset>
         </form>
       </div>
+
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-id-card-clip"></i> &nbsp;PAN &amp; Aadhaar</h3></div>
+        <div class="form-grid">
+          <div class="field no-icon">
+            <label>PAN Number
+              <span id="panVerBadge" class="pill" style="display:none;margin-left:6px"></span>
+            </label>
+            <input id="pan_number" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase" />
+            <p class="hint" style="text-align:left;margin-top:4px">Shown to you as: <b id="panMask">—</b></p>
+          </div>
+          <div class="field no-icon">
+            <label>PAN Card (image or PDF)</label>
+            <input id="pan_file" type="file" accept="image/*,application/pdf" />
+            <p class="hint" style="text-align:left;margin-top:4px">
+              <a href="#" id="panDl" style="display:none;color:var(--primary-2)"><i class="fa-solid fa-file"></i> View uploaded</a>
+            </p>
+          </div>
+          <div class="field no-icon">
+            <label>Aadhaar Number
+              <span id="aadVerBadge" class="pill" style="display:none;margin-left:6px"></span>
+            </label>
+            <input id="aadhaar_number" inputmode="numeric" maxlength="12" placeholder="12-digit Aadhaar" />
+            <p class="hint" style="text-align:left;margin-top:4px">Shown to you as: <b id="aadMask">—</b></p>
+          </div>
+          <div class="field no-icon">
+            <label>Aadhaar (front)</label>
+            <input id="aad_front_file" type="file" accept="image/*,application/pdf" />
+            <p class="hint" style="text-align:left;margin-top:4px">
+              <a href="#" id="aadFrontDl" style="display:none;color:var(--primary-2)"><i class="fa-solid fa-file"></i> View uploaded</a>
+            </p>
+          </div>
+          <div class="field no-icon">
+            <label>Aadhaar (back)</label>
+            <input id="aad_back_file" type="file" accept="image/*,application/pdf" />
+            <p class="hint" style="text-align:left;margin-top:4px">
+              <a href="#" id="aadBackDl" style="display:none;color:var(--primary-2)"><i class="fa-solid fa-file"></i> View uploaded</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="head"><h3><i class="fa-solid fa-building-columns"></i> &nbsp;Bank &amp; Emergency Contact</h3></div>
+        <div class="form-grid">
+          <div class="field no-icon"><label>Bank Name</label><input id="bank_name" /></div>
+          <div class="field no-icon"><label>Account Number</label><input id="account_number" /><p class="hint" style="text-align:left;margin-top:4px">Shown to you as: <b id="acctMask">—</b></p></div>
+          <div class="field no-icon"><label>IFSC</label><input id="ifsc" style="text-transform:uppercase" /></div>
+          <div class="field no-icon"><label>Emergency Contact Name</label><input id="emergency_contact_name" /></div>
+          <div class="field no-icon"><label>Emergency Contact Phone</label><input id="emergency_contact_phone" inputmode="numeric" maxlength="10" /></div>
+        </div>
+
+        <div class="form-actions" style="margin-top: 16px">
+          <button class="btn" type="button" id="submitChangesBtn"><i class="fa-solid fa-paper-plane"></i> Submit changes for admin approval</button>
+        </div>
+      </div>
+
     </section>
   </main>
 </div>
@@ -74,8 +131,10 @@
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supa.js"></script>
 <script src="js/storage.js"></script>
+<script src="js/masking.js"></script>
 <script src="js/user-layout.js"></script>
 <script src="js/my-profile.js"></script>
 </body>

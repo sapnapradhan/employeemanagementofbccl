@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BCCL EMS — Notifications</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-title"><i class="fa-solid fa-bell"></i> &nbsp;Notifications</div>
+      <div class="grow"></div>
+      <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+      <div class="user" id="userBadge"><div class="avatar" id="userInitial">U</div><div><div style="font-size:13px;font-weight:600" id="userName">User</div><div style="font-size:11px;color:var(--text-muted)" id="userEmail">—</div></div></div>
+    </header>
+    <section class="content">
+      <div class="card">
+        <div class="head">
+          <h3><i class="fa-solid fa-inbox"></i> &nbsp;Your Notifications</h3>
+          <button class="btn ghost" id="markAllBtn"><i class="fa-solid fa-check-double"></i> Mark all as read</button>
+        </div>
+        <div id="notifList" class="recent"></div>
+        <div id="notifEmpty" class="empty" style="display:none">You have no notifications.</div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supa.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/user-layout.js"></script>
+<script>
+(async function () {
+  const SUPA = window.SUPA;
+  const list = document.getElementById("notifList");
+  const empty = document.getElementById("notifEmpty");
+  document.getElementById("markAllBtn").addEventListener("click", async () => {
+    const { error } = await SUPA.from("notifications").update({ read_at: new Date().toISOString() }).is("read_at", null);
+    if (error) return EMS.toast(error.message, "error");
+    EMS.toast("All marked as read"); load();
+  });
+  await load();
+
+  async function load() {
+    const { data, error } = await SUPA.from("notifications").select("*").order("created_at", { ascending: false }).limit(100);
+    if (error) { EMS.toast(error.message, "error"); return; }
+    if (!data?.length) { list.innerHTML = ""; empty.style.display = "block"; return; }
+    empty.style.display = "none";
+    const iconFor = (t) => ({
+      profile_approved:  "fa-circle-check",
+      profile_rejected:  "fa-circle-xmark",
+      pan_verified:      "fa-id-card",
+      aadhaar_verified:  "fa-id-card-clip",
+      form16_uploaded:   "fa-file-invoice-dollar",
+      admin_edited:      "fa-user-shield",
+    }[t] || "fa-bell");
+    list.innerHTML = data.map(n => `
+      <div class="item" style="${n.read_at ? "opacity:.7" : ""}">
+        <div class="av"><i class="fa-solid ${iconFor(n.type)}"></i></div>
+        <div class="meta">
+          <div class="n">${escapeHtml(n.title)} ${n.read_at ? "" : `<span class="pill err" style="margin-left:6px">New</span>`}</div>
+          <div class="d">${escapeHtml(n.body || "")}</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted)">${new Date(n.created_at).toLocaleString()}</div>
+      </div>`).join("");
+  }
+  function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+})();
+</script>
+</body>
+</html>
