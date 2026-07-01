@@ -13,60 +13,33 @@
   <main class="main">
     <header class="topbar">
       <button class="icon-btn menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
-      <div class="page-title"><i class="fa-solid fa-user-plus"></i> &nbsp;<span id="pageTitle">Add Employee</span></div>
+      <div class="page-title"><i class="fa-solid fa-user-plus"></i> &nbsp;Add Employee</div>
       <div class="grow"></div>
       <button class="icon-btn" id="themeToggle"><i class="fa-solid fa-moon"></i></button>
       <div class="user"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600">Admin</div><div style="font-size:11px;color:var(--text-muted)">BCCL HQ</div></div></div>
     </header>
     <section class="content">
       <div class="card">
-        <div class="head"><h3><i class="fa-solid fa-id-badge"></i> &nbsp;Employee Information</h3><div class="ic"><i class="fa-solid fa-pen-to-square"></i></div></div>
-        <form id="empForm" novalidate>
-          <div class="photo-row" style="margin-bottom: 18px;">
-            <div class="photo-preview" id="photoPreview"><i class="fa-solid fa-user"></i></div>
-            <div style="flex:1">
-              <label class="btn ghost" for="photoInput"><i class="fa-solid fa-upload"></i> Upload Photo</label>
-              <input id="photoInput" type="file" accept="image/*" hidden />
-              <button class="btn danger" id="removePhoto" type="button" style="display:none"><i class="fa-solid fa-trash"></i> Remove</button>
-              <p class="hint" style="text-align:left;margin-top:8px">PNG/JPG up to 2 MB (stored locally).</p>
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="field no-icon"><label>Employee ID</label><input id="employeeId" readonly /></div>
-            <div class="field no-icon"><label>Employee Name *</label><input id="name" placeholder="Full name" /><div class="err">Name is required</div></div>
-            <div class="field no-icon"><label>Father's Name *</label><input id="fatherName" placeholder="Father's name" /><div class="err">Father's name is required</div></div>
-            <div class="field no-icon"><label>Date of Birth *</label><input id="dob" type="date" /><div class="err">DOB is required</div></div>
-            <div class="field no-icon"><label>Phone Number *</label><input id="phone" inputmode="numeric" maxlength="10" placeholder="10-digit mobile" /><div class="err">Enter a valid 10-digit phone</div></div>
-            <div class="field no-icon"><label>Aadhaar Number *</label><input id="aadhaar" inputmode="numeric" maxlength="12" placeholder="12-digit Aadhaar" /><div class="err">Enter a valid 12-digit Aadhaar</div></div>
-            <div class="field no-icon"><label>Email *</label><input id="email" type="email" placeholder="name@bccl.in" /><div class="err">Enter a valid email</div></div>
-            <div class="field no-icon"><label>Qualification *</label><input id="qualification" placeholder="e.g. B.Tech, MBA" /><div class="err">Qualification is required</div></div>
-            <div class="field no-icon"><label>Designation *</label><input id="designation" placeholder="e.g. Manager" /><div class="err">Designation is required</div></div>
-            <div class="field no-icon"><label>Department *</label>
-              <select id="department">
-                <option value="">Select department</option>
-                <option>Mining</option><option>Operations</option><option>Engineering</option>
-                <option>Finance</option><option>HR</option><option>IT</option>
-                <option>Safety</option><option>Logistics</option><option>Administration</option>
-              </select>
-              <div class="err">Department is required</div>
-            </div>
-            <div class="field no-icon"><label>Salary (₹) *</label><input id="salary" type="number" min="0" placeholder="Monthly salary" /><div class="err">Enter a valid salary</div></div>
-            <div class="field no-icon" style="grid-column: 1 / -1"><label>Address *</label><textarea id="address" rows="2" placeholder="Residential address"></textarea><div class="err">Address is required</div></div>
-          </div>
-          <div class="form-actions">
-            <a class="btn ghost" href="view-employee.html"><i class="fa-solid fa-xmark"></i> Cancel</a>
-            <button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> <span id="submitLabel">Save Employee</span></button>
-          </div>
-        </form>
+        <div class="head"><h3><i class="fa-solid fa-circle-info"></i> &nbsp;Employees self-register</h3></div>
+        <p>
+          Admins no longer create employee records directly. Employees create their own account
+          on the sign-in page (Sign Up tab), fill in their profile, and submit it for admin
+          approval. All new profiles and edits appear in
+          <a href="approvals.html" style="color:var(--primary-2)">Approvals</a>.
+        </p>
+        <div class="form-actions">
+          <a class="btn ghost" href="view-employee.html"><i class="fa-solid fa-users"></i> View Employees</a>
+          <a class="btn" href="approvals.html"><i class="fa-solid fa-user-check"></i> Go to Approvals</a>
+        </div>
       </div>
     </section>
   </main>
 </div>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supa.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/layout.js"></script>
-<script src="js/employee.js"></script>
 </body>
 </html>
