@@ -103,12 +103,40 @@ document.getElementById("adminForm").addEventListener("submit", async (e) => {
   setTimeout(() => location.href = "dashboard.html", 300);
 });
 
-/* One-time helper: create the permanent admin account if it does not exist yet.
-   The database trigger will automatically grant the admin role. */
+/* One-time admin setup: only visible when NO admin exists in the DB.
+   The password is whatever the user types into the admin password field —
+   never a hardcoded value. */
+async function refreshAdminSetupVisibility() {
+  const wrap = document.getElementById("seedAdminWrap");
+  const hint = document.getElementById("adminHint");
+  try {
+    const { data, error } = await window.SUPA.rpc("admin_exists");
+    const exists = error ? true : !!data; // fail closed
+    wrap.style.display  = exists ? "none" : "";
+    hint.style.display  = exists ? "none" : "";
+  } catch {
+    wrap.style.display = "none";
+    hint.style.display = "none";
+  }
+}
+refreshAdminSetupVisibility();
+
 document.getElementById("seedAdminBtn").addEventListener("click", async () => {
   hideAlert("adminAlert");
   const email = ADMIN_EMAIL;
-  const pass  = window.BCCL.CONFIG.DEFAULT_ADMIN_PASSWORD;
+  const pass  = document.getElementById("aPass").value;
+  if (!pass || pass.length < 6) {
+    return showAlert("adminAlert", "Enter a password (min 6 chars) in the field above — it becomes the permanent admin password.");
+  }
+
+  // Re-check server-side to prevent races / tampering.
+  const { data: exists, error: chkErr } = await window.SUPA.rpc("admin_exists");
+  if (chkErr) return showAlert("adminAlert", chkErr.message);
+  if (exists) {
+    await refreshAdminSetupVisibility();
+    return showAlert("adminAlert", "Admin account already exists.");
+  }
+
   const { data, error } = await window.SUPA.auth.signUp({
     email, password: pass,
     options: {
@@ -117,8 +145,9 @@ document.getElementById("seedAdminBtn").addEventListener("click", async () => {
     }
   });
   if (error) return showAlert("adminAlert", error.message);
+  await refreshAdminSetupVisibility();
   if (!data.session) {
-    return showAlert("adminAlert", "Admin created — confirm the email (if required) then sign in.");
+    return showAlert("adminAlert", "Admin created — confirm the email (if required) then sign in with the password you just set.");
   }
   EMS.toast("Admin created — signing in…");
   setTimeout(() => location.href = "dashboard.html", 500);
