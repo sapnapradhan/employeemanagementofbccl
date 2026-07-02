@@ -59,10 +59,15 @@
 
         <label for="pdfInput" class="dropzone" id="dropzone">
           <i class="fa-solid fa-file-pdf" style="font-size:32px;color:var(--primary-2)"></i>
-          <div style="margin-top:8px"><b>Drag &amp; drop</b> PDFs here, or click to choose.</div>
-          <div style="color:var(--text-muted);font-size:12px;margin-top:4px">Filename must be the PAN — e.g. ABCDE1234F.pdf</div>
+          <div style="margin-top:8px"><b>Drag &amp; drop</b> PDFs (or a folder) here, or click to choose.</div>
+          <div style="color:var(--text-muted);font-size:12px;margin-top:4px">Auto-matches by PAN filename, Employee Code filename, or PAN inside the PDF.</div>
         </label>
         <input id="pdfInput" type="file" accept="application/pdf" multiple hidden />
+
+        <div id="progressWrap" style="display:none;margin-top:12px">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px" id="progressLabel">Parsing…</div>
+          <div style="height:8px;background:var(--glass-strong);border-radius:6px;overflow:hidden"><div id="progressBar" style="height:100%;width:0;background:var(--primary-2);transition:width .2s"></div></div>
+        </div>
 
         <div class="form-actions" style="margin-top: 12px">
           <button class="btn ghost" type="button" id="clearBtn"><i class="fa-solid fa-eraser"></i> Clear</button>
@@ -72,6 +77,7 @@
 
       <div class="card">
         <div class="head"><h3><i class="fa-solid fa-list-check"></i> &nbsp;Preview &amp; Validation</h3></div>
+        <div id="summary" class="summary"></div>
         <div class="file-list" id="fileList"></div>
         <div id="listEmpty" class="empty">Select files to preview matching results.</div>
       </div>
