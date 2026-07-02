@@ -84,14 +84,14 @@
         <div style="margin-top: 22px;">
           <button class="btn block" type="submit"><i class="fa-solid fa-user-shield"></i> Sign In as Admin</button>
         </div>
-        <p class="hint">
-          Dev admin: <b>admin@bccl.com</b> / <b>admin123</b>. First time?
-          Use the <b>Sign Up</b> button below (one time only) to create this account —
-          the admin role is granted automatically.
+        <p class="hint" id="adminHint" style="display:none">
+          <b>First-time setup:</b> No admin exists yet. Enter the password you
+          want to use for <b>admin@bccl.com</b> above and click
+          <b>Create Admin Account</b>. This is a one-time action.
         </p>
-        <div style="margin-top: 8px">
+        <div style="margin-top: 8px; display:none" id="seedAdminWrap">
           <button class="btn ghost block" type="button" id="seedAdminBtn">
-            <i class="fa-solid fa-key"></i> Sign Up admin@bccl.com (one-time)
+            <i class="fa-solid fa-key"></i> Create Admin Account (one-time)
           </button>
         </div>
       </form>

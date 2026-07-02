@@ -399,6 +399,7 @@ export type Database = {
       }
     }
     Functions: {
+      admin_exists: { Args: never; Returns: boolean }
       approve_change_request: { Args: { _req_id: string }; Returns: undefined }
       bulk_form16_lookup: {
         Args: { _pan: string }
