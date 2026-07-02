@@ -410,6 +410,16 @@ export type Database = {
           user_id: string
         }[]
       }
+      bulk_form16_lookup_code: {
+        Args: { _code: string }
+        Returns: {
+          employee_name: string
+          employee_profile_id: string
+          match_status: string
+          pan_number: string
+          user_id: string
+        }[]
+      }
       bulk_form16_upload_finalize: {
         Args: {
           _file_path: string
